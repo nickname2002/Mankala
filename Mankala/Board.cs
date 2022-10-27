@@ -127,13 +127,15 @@ namespace Mankala
         /* Draw backdrop of the board */
         public void DrawBoardBackdrop(Graphics gr)
         {
-            // Color: Brushes.Peru
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             gr.FillRectangle(Brushes.Peru, coords.X, coords.Y - OFFSET_TO_BORDER, this.width, this.height);
         }
 
         /* Drawing home pits */
         private void DrawHomePits(Graphics gr)
         {
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             // Draw left home pit
             gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X, coords.Y, homePitWidth, homePitHeight);
             gr.DrawString((pits[0].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X, coords.Y);
@@ -146,6 +148,8 @@ namespace Mankala
         /* Drawing play pits */
         private void DrawPlayPits(Graphics gr)
         {
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             // Draw first row
             for (int i = 0; i < PlaysPitPerRow; i++)
             {
