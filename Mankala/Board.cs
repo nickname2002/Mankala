@@ -22,19 +22,47 @@ namespace Mankala
         private int playPitWidth;
         private int playPitHeight;
 
+        // Starting number of stones per pit
+        private int startingStonesAmount;
+        private int playPitsPerRow;
+
         // Board dimensions
-        public int Size { get; set; }
+        public int PlaysPitPerRow 
+        { 
+            get
+            {
+                return playPitsPerRow;
+            }
+        }
+
+        public int PlayPitsTotal 
+        { 
+            get
+            {
+                return PlaysPitPerRow * 2;
+            }
+        }
+
+        public int PitsTotal 
+        {   
+            get
+            {
+                return PlaysPitPerRow * 2 + 2;
+            } 
+        }
+        
         private Point coords;
         private int width;
         private int height;
 
-        public Board(int size)
+        public Board(int size, int startingStonesAmount)
         {
             // Init board size
-            this.Size = size;
+            this.playPitsPerRow = size;
 
             // Arrange array of pits
-            this.pits = new Pit[Size + 2];
+            this.startingStonesAmount = startingStonesAmount;
+            this.pits = new Pit[(PlaysPitPerRow * 2) + 2];
             this.FillBoard();
 
             // Init pit sizes
@@ -44,8 +72,8 @@ namespace Mankala
             this.playPitHeight = pits[1].Height;
 
             // Set dimensions of board 
-            this.width = (pits[0].Width * 2) + (pits[0].Width * this.Size) + (PIT_OFFSET * (this.Size + 1)) + (2 * OFFSET_TO_BORDER);
-            this.height = (pits[0].Height) + this.Size + OFFSET_TO_BORDER * 2;
+            this.width = (pits[0].Width * 2) + (pits[0].Width * this.PlaysPitPerRow) + (PIT_OFFSET * (this.PlaysPitPerRow + 1)) + (2 * OFFSET_TO_BORDER);
+            this.height = (pits[0].Height) + this.PlaysPitPerRow + OFFSET_TO_BORDER * 2;
 
             // Set coordinates of board
             this.coords.X = (800 - this.width) / 2;
@@ -55,9 +83,9 @@ namespace Mankala
         /* Fill board with pits */
         private void FillBoard()
         {
-            for (int i = 0; i < (Size + 1); i++)
+            for (int i = 0; i < this.PitsTotal; i++)
             {
-                if (i == 0 || i == Size)
+                if (i == 0 || i == PlaysPitPerRow)
                 {
                     this.pits[i] = new HomePit();
                 }
@@ -66,6 +94,9 @@ namespace Mankala
                     this.pits[i] = new PlayPit();
                 }
             }
+
+            // Add stones to the pits
+            ResetBoard();
         }
 
         /* Draw the full board */
@@ -88,24 +119,43 @@ namespace Mankala
         {
             // Draw left home pit
             gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X, coords.Y, homePitWidth, homePitHeight);
+            gr.DrawString((pits[0].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X, coords.Y);
 
             // Draw right home pit
-            gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * Size + PIT_OFFSET * Size, coords.Y, homePitWidth, homePitHeight);
+            gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y, homePitWidth, homePitHeight);
+            gr.DrawString((pits[this.PitsTotal - 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y);
         }
 
         /* Drawing play pits */
         private void DrawPlayPits(Graphics gr)
         {
             // Draw first row
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < PlaysPitPerRow; i++)
             {
                 gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y, playPitWidth, playPitHeight);
+                gr.DrawString((pits[i + 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y);
             }
 
-            // Draw secod row
-            for (int i = 0; i < Size; i++)
+            // Draw second row
+            for (int i = 0; i < PlaysPitPerRow; i++)
             {
                 gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET, playPitWidth, playPitHeight);
+                gr.DrawString((pits[PlaysPitPerRow + i].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET);
+            }
+        }
+
+        /* Reset the playing board */
+        public void ResetBoard()
+        {
+            // Homepits cleared
+            this.pits[0].RemoveStone();
+            this.pits[(PitsTotal - 1)].RemoveStone();
+
+            // Each pit cleared and stones added
+            for (int i = 0; i < this.PlayPitsTotal; i++)
+            {
+                this.pits[i + 1].RemoveStone();
+                this.pits[i + 1].Fill(this.startingStonesAmount);
             }
         }
     }

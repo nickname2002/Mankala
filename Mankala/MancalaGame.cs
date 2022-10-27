@@ -32,7 +32,7 @@ namespace Mankala
             this.p2 = new Player();
 
             // NOTE: placeholder board for testing purposes
-            this.board = new Board(6);
+            this.board = new Board(6, 4);
         }
 
         public Board PerformTurn(Player p, Board b)

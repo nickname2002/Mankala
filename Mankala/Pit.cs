@@ -10,7 +10,13 @@ namespace Mankala
     public abstract class Pit
     {
         protected List<Stone> stones;
-        public int StonesAmount { get; set; }
+        public int StonesAmount
+        {
+            get
+            {
+                return stones.Count;
+            }
+        }
 
         protected int width;
         protected int height;
@@ -31,9 +37,22 @@ namespace Mankala
             }
         }
 
+        public void Fill(int stonesAmount)
+        {
+            for (int i = 0; i < stonesAmount; i++)
+            {
+                AddStone();
+            }
+        }
+
         public void AddStone()
         {
             this.stones.Add(new Stone());
+        }
+
+        public void RemoveStone()
+        {
+            this.stones.Clear();
         }
     }
 }

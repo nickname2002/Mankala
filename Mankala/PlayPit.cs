@@ -13,11 +13,7 @@ namespace Mankala
         {
             this.width = 80;
             this.height = 80;
-        }
-
-        public void RemoveStone()
-        {
-            this.stones.Clear();
+            this.stones = new List<Stone>();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Mankala
         {
             this.width = 80;
             this.height = 170;
+            this.stones = new List<Stone>();
         }
     }
 }
