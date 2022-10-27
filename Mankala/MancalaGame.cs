@@ -28,11 +28,11 @@ namespace Mankala
 
         public MancalaGame()
         {
-            this.p1 = new Player();
-            this.p2 = new Player();
-
             // NOTE: placeholder board for testing purposes
             this.board = new Board(6, 4);
+
+            this.p1 = new Player(board.HomePitRight, board.HomePitLeft);
+            this.p2 = new Player(board.HomePitLeft, board.HomePitRight);
         }
 
         public Board PerformTurn(Player p, Board b)

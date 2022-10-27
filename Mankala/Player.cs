@@ -9,10 +9,29 @@ namespace Mankala
 {
     public class Player
     {
-        Pit homePit;
+        private Pit homePit;
+        private Pit opposingHomePit;
 
-        public Player()
+        public Pit HomePit
+        {
+            get 
+            { 
+                return homePit; 
+            }
+        }
+
+        public Pit OpposingHomePit
+        {
+            get
+            {
+                return opposingHomePit;
+            }
+        }
+
+        public Player(Pit homePit, Pit opposingHomePit)
         { 
+            this.homePit = homePit;
+            this.opposingHomePit = opposingHomePit;
         }
     }
 }

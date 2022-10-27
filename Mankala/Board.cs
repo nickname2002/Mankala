@@ -14,7 +14,24 @@ namespace Mankala
         private const int PIT_OFFSET = 10;
 
         // Array containing pits in board
-        Pit[] pits;
+        private Pit[] pits;
+
+        // Homepits
+        public Pit HomePitLeft
+        {
+            get
+            {
+                return pits[0];
+            }
+        }
+
+        public Pit HomePitRight
+        {
+            get
+            {
+                return pits[this.PitsTotal - 1];
+            }
+        }
 
         // Pit dimensions
         private int homePitWidth;
@@ -87,11 +104,11 @@ namespace Mankala
             {
                 if (i == 0 || i == PlaysPitPerRow)
                 {
-                    this.pits[i] = new HomePit();
+                    this.pits[i] = new HomePit(i);
                 }
                 else
                 {
-                    this.pits[i] = new PlayPit();
+                    this.pits[i] = new PlayPit(i);
                 }
             }
 
@@ -156,6 +173,37 @@ namespace Mankala
             {
                 this.pits[i + 1].RemoveStone();
                 this.pits[i + 1].Fill(this.startingStonesAmount);
+            }
+        }
+
+        /* Get the next pit in counterclockwise direction */
+        public Pit NextPit(Pit cPit)
+        {
+            // Index of the current pits
+            int indexOfPit = cPit.IndexInList;
+
+            // Index equal to right homepit
+            if (indexOfPit == PitsTotal - 1)
+            {
+                return this.pits[this.PlaysPitPerRow];
+            } 
+            // Index equal to left homepit
+            else if (indexOfPit == 0)
+            {
+                return this.pits[this.playPitsPerRow + 1];
+            }
+            // Index equal to playpit
+            else
+            {
+                // Determine whether to go left or right
+                if (indexOfPit <= playPitsPerRow)
+                {
+                    return this.pits[indexOfPit - 1];
+                }
+                else
+                {
+                    return this.pits[indexOfPit + 1];
+                }
             }
         }
     }

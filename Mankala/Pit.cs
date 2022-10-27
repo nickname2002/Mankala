@@ -18,6 +18,15 @@ namespace Mankala
             }
         }
 
+        protected int index;
+        public int IndexInList
+        {
+            get
+            {
+                return index;
+            }
+        }
+
         protected int width;
         protected int height;
         
@@ -53,6 +62,12 @@ namespace Mankala
         public void RemoveStone()
         {
             this.stones.Clear();
+        }
+
+        public int GetStone()
+        {
+            return this.stones.Count;
+            this.RemoveStone();
         }
     }
 }

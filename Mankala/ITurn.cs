@@ -8,6 +8,6 @@ namespace Mankala
 {
     public interface ITurn
     {
-        public Board PerformTurn(Board board);
+        public void PerformTurn(Board board, Player cPlayer, Pit startingPit);
     }
 }

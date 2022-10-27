@@ -9,11 +9,12 @@ namespace Mankala
 {
     public class HomePit : Pit
     {
-        public HomePit() 
+        public HomePit(int indexInList) 
         {
             this.width = 80;
             this.height = 170;
             this.stones = new List<Stone>();
+            this.index = indexInList;
         }
     }
 }
