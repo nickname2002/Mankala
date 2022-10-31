@@ -26,14 +26,17 @@ namespace Mankala
         IScore scoreStrategy;
         ITurn turnStrategy; 
 
-        public MancalaGame()
+        public MancalaGame(IMancalaFactory game)
         {
             // NOTE: Placeholder values
             this.board = new Board(6, 4);
             this.mancalaFactory = new MancalaFactory();
+            
+            // Initialize strategies with factory
             this.scoreStrategy = mancalaFactory.CreateScore();
             this.turnStrategy = mancalaFactory.CreateTurn();
 
+            // Initialize players
             this.p1 = new Player("P1", board.HomePitRight, board.HomePitLeft);
             this.p2 = new Player("P2", board.HomePitLeft, board.HomePitRight);
             this.activePlayer = p1;
@@ -41,6 +44,7 @@ namespace Mankala
 
         public void DrawScore(Graphics gr)
         {
+            gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
         }
 

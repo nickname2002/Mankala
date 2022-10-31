@@ -62,6 +62,8 @@ namespace Mankala
 
         public void Draw(Graphics gr)
         {
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             gr.FillEllipse(Brushes.Sienna, ScreenLoc.X, ScreenLoc.Y, width, height);
             gr.DrawString(StonesAmount.ToString(), new Font("Trebuchet MS", 20), Brushes.Gold, ScreenLoc.X + (width / 3f), ScreenLoc.Y + (height / 3f));
         }
