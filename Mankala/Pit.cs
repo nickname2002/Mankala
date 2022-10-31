@@ -27,9 +27,23 @@ namespace Mankala
             }
         }
 
+        protected Point screenLoc;
         protected int width;
         protected int height;
-        
+
+        public Point ScreenLoc
+        {
+            get
+            {
+                return screenLoc;
+            }
+
+            set
+            {
+                this.screenLoc = value;
+            }
+        }
+
         public int Width 
         {
             get 
@@ -67,7 +81,14 @@ namespace Mankala
         public int GetStone()
         {
             return this.stones.Count;
-            this.RemoveStone();
+        }
+
+        public bool Clicked(Point mouseLoc)
+        {
+            bool withinRangeX = mouseLoc.X > screenLoc.X && mouseLoc.X < screenLoc.X + this.width;
+            bool withinRangeY = mouseLoc.Y > screenLoc.Y && mouseLoc.Y < screenLoc.Y + this.height;
+
+            return withinRangeX && withinRangeY;
         }
     }
 }

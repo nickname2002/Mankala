@@ -22,5 +22,20 @@ namespace Mankala
         {
             throw new NotImplementedException();
         }
+
+        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit lastPit)
+        {
+            if (lastPit == cPlayer.HomePit)
+            {
+                return cPlayer;
+            }
+
+            if (cPlayer == p1)
+            {
+                return p2;
+            }
+
+            return p1;
+        }
     }
 }

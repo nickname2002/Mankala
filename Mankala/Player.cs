@@ -9,6 +9,7 @@ namespace Mankala
 {
     public class Player
     {
+        private string strRep;
         private Pit homePit;
         private Pit opposingHomePit;
 
@@ -28,10 +29,16 @@ namespace Mankala
             }
         }
 
-        public Player(Pit homePit, Pit opposingHomePit)
-        { 
+        public Player(string name, Pit homePit, Pit opposingHomePit)
+        {
+            this.strRep = name;
             this.homePit = homePit;
             this.opposingHomePit = opposingHomePit;
+        }
+
+        public override string ToString()
+        {
+            return this.strRep;
         }
     }
 }

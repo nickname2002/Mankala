@@ -11,5 +11,6 @@ namespace Mankala
     {
         public bool GameOver(Board board);
         public Player GetWinner(Board board); 
+        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit lastPit);
     }
 }

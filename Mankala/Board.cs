@@ -116,9 +116,24 @@ namespace Mankala
             ResetBoard();
         }
 
+        /* Checks whether a pit is clicked */
+        public Pit? ClickPit(Point mouseLoc)
+        {
+            foreach (Pit pit in this.pits)
+            {
+                if (pit.Clicked(mouseLoc))
+                {
+                    return pit;
+                }
+            }
+
+            return null;
+        }
+
         /* Draw the full board */
         public void Draw(Graphics gr)
         {
+
             DrawBoardBackdrop(gr);
             DrawHomePits(gr);
             DrawPlayPits(gr);
@@ -137,12 +152,14 @@ namespace Mankala
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // Draw left home pit
-            gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X, coords.Y, homePitWidth, homePitHeight);
-            gr.DrawString((pits[0].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X, coords.Y);
+            HomePitLeft.ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X, coords.Y);
+            gr.FillEllipse(Brushes.Sienna, HomePitLeft.ScreenLoc.X, HomePitLeft.ScreenLoc.Y, homePitWidth, homePitHeight);
+            gr.DrawString((pits[0].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, HomePitLeft.ScreenLoc);
 
             // Draw right home pit
-            gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y, homePitWidth, homePitHeight);
-            gr.DrawString((pits[this.PitsTotal - 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y);
+            HomePitRight.ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y);
+            gr.FillEllipse(Brushes.Sienna, HomePitRight.ScreenLoc.X, HomePitRight.ScreenLoc.Y, homePitWidth, homePitHeight);
+            gr.DrawString((pits[this.PitsTotal - 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, HomePitRight.ScreenLoc);
         }
 
         /* Drawing play pits */
@@ -153,15 +170,17 @@ namespace Mankala
             // Draw first row
             for (int i = 0; i < PlaysPitPerRow; i++)
             {
-                gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y, playPitWidth, playPitHeight);
-                gr.DrawString((pits[i + 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y);
+                pits[i + 1].ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y);
+                gr.FillEllipse(Brushes.Sienna, pits[i + 1].ScreenLoc.X, pits[i + 1].ScreenLoc.Y, playPitWidth, playPitHeight);
+                gr.DrawString((pits[i + 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, pits[i + 1].ScreenLoc.X, pits[i + 1].ScreenLoc.Y);
             }
 
             // Draw second row
             for (int i = 0; i < PlaysPitPerRow; i++)
             {
-                gr.FillEllipse(Brushes.Sienna, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET, playPitWidth, playPitHeight);
-                gr.DrawString((pits[PlaysPitPerRow + i].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET);
+                pits[PlaysPitPerRow + i].ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET);
+                gr.FillEllipse(Brushes.Sienna, pits[PlaysPitPerRow + i].ScreenLoc.X, pits[PlaysPitPerRow + i].ScreenLoc.Y, playPitWidth, playPitHeight);
+                gr.DrawString((pits[PlaysPitPerRow + i].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, pits[PlaysPitPerRow + i].ScreenLoc);
             }
         }
 

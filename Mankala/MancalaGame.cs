@@ -17,7 +17,7 @@ namespace Mankala
         // Player data 
         Player p1;
         Player p2;
-        Player activePlayer;
+        public Player activePlayer;
 
         // Board
         public Board board;
@@ -28,16 +28,33 @@ namespace Mankala
 
         public MancalaGame()
         {
-            // NOTE: placeholder board for testing purposes
+            // NOTE: Placeholder values
             this.board = new Board(6, 4);
+            this.mancalaFactory = new MancalaFactory();
+            this.scoreStrategy = mancalaFactory.CreateScore();
+            this.turnStrategy = mancalaFactory.CreateTurn();
 
-            this.p1 = new Player(board.HomePitRight, board.HomePitLeft);
-            this.p2 = new Player(board.HomePitLeft, board.HomePitRight);
+            this.p1 = new Player("P1", board.HomePitRight, board.HomePitLeft);
+            this.p2 = new Player("P2", board.HomePitLeft, board.HomePitRight);
+            this.activePlayer = p1;
         }
 
-        public Board PerformTurn(Player p, Board b)
+        public void DrawScore(Graphics gr)
         {
-            throw new NotImplementedException();
+            gr.DrawString($"Active player: {this.activePlayer}", new Font("Arial", 16), Brushes.Black, new Point(100, 50));
+        }
+
+        public void PerformTurn(Point mouseLoc)
+        {
+            Pit? clickedPit = board.ClickPit(mouseLoc);
+
+            if (clickedPit == null)
+            {
+                return;
+            }
+
+            Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
+            this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, lastPit);
         }
 
         public bool GameOver()

@@ -22,13 +22,23 @@ namespace Mankala
             this.ClientSize = new Size(WIDTH, HEIGHT);
             this.Text = "Mankala";
             this.game = new MancalaGame();
+            this.DoubleBuffered = true;
             this.Paint += Draw;
+            this.MouseClick += Click;
         }
 
         // Draw event handler
         private void Draw(object sender, PaintEventArgs pea)
         {
+            game.DrawScore(pea.Graphics);
             game.board.Draw(pea.Graphics);
+        }
+
+        // Click event handler
+        private void Click(object sender, MouseEventArgs mea)
+        {
+            game.PerformTurn(mea.Location);
+            this.Invalidate();
         }
     }
 }

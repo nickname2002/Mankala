@@ -8,12 +8,13 @@ namespace Mankala
 {
     public class MancalaTurn : ITurn
     {
-        public void PerformTurn(Board board, Player cPlayer, Pit startingPit)
+        public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
             Pit cPit = startingPit;
 
             // Get stones from a pit
-            int stonesAmount = startingPit.GetStone(); 
+            int stonesAmount = startingPit.GetStone();
+            startingPit.RemoveStone();
 
             // Move to pits in counterclockwise direction, add one stone
             while (stonesAmount != 0)
@@ -29,6 +30,8 @@ namespace Mankala
                 cPit.AddStone();
                 stonesAmount--;
             }
+
+            return cPit;
         }
     }
 }
