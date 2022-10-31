@@ -102,7 +102,7 @@ namespace Mankala
         {
             for (int i = 0; i < this.PitsTotal; i++)
             {
-                if (i == 0 || i == PlaysPitPerRow)
+                if (i == 0 || i == PitsTotal - 1)
                 {
                     this.pits[i] = new HomePit(i);
                 }
@@ -133,7 +133,6 @@ namespace Mankala
         /* Draw the full board */
         public void Draw(Graphics gr)
         {
-
             DrawBoardBackdrop(gr);
             DrawHomePits(gr);
             DrawPlayPits(gr);
@@ -151,15 +150,12 @@ namespace Mankala
         {
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Draw left home pit
-            HomePitLeft.ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X, coords.Y);
-            gr.FillEllipse(Brushes.Sienna, HomePitLeft.ScreenLoc.X, HomePitLeft.ScreenLoc.Y, homePitWidth, homePitHeight);
-            gr.DrawString((pits[0].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, HomePitLeft.ScreenLoc);
-
-            // Draw right home pit
+            // Determine coordinates of each pit
+            HomePitLeft.ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X, coords.Y);            
             HomePitRight.ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + PIT_OFFSET + homePitWidth + homePitWidth * PlaysPitPerRow + PIT_OFFSET * PlaysPitPerRow, coords.Y);
-            gr.FillEllipse(Brushes.Sienna, HomePitRight.ScreenLoc.X, HomePitRight.ScreenLoc.Y, homePitWidth, homePitHeight);
-            gr.DrawString((pits[this.PitsTotal - 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, HomePitRight.ScreenLoc);
+
+            HomePitLeft.Draw(gr);
+            HomePitRight.Draw(gr);
         }
 
         /* Drawing play pits */
@@ -167,20 +163,35 @@ namespace Mankala
         {
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Draw first row
-            for (int i = 0; i < PlaysPitPerRow; i++)
+            // Draw play pits
+            for (int i = 0; i < PlaysPitPerRow * 2; i++)
             {
-                pits[i + 1].ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y);
-                gr.FillEllipse(Brushes.Sienna, pits[i + 1].ScreenLoc.X, pits[i + 1].ScreenLoc.Y, playPitWidth, playPitHeight);
-                gr.DrawString((pits[i + 1].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, pits[i + 1].ScreenLoc.X, pits[i + 1].ScreenLoc.Y);
-            }
+                Pit cPit = this.pits[i + 1];
 
-            // Draw second row
-            for (int i = 0; i < PlaysPitPerRow; i++)
-            {
-                pits[PlaysPitPerRow + i].ScreenLoc = new Point(OFFSET_TO_BORDER + coords.X + playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i, coords.Y + playPitWidth + PIT_OFFSET);
-                gr.FillEllipse(Brushes.Sienna, pits[PlaysPitPerRow + i].ScreenLoc.X, pits[PlaysPitPerRow + i].ScreenLoc.Y, playPitWidth, playPitHeight);
-                gr.DrawString((pits[PlaysPitPerRow + i].StonesAmount).ToString(), new Font("Arial", 16), Brushes.Gold, pits[PlaysPitPerRow + i].ScreenLoc);
+                // Position of pit
+                int posX;
+                int posY;
+                int offsetToLeft;
+
+                // Determine coordinates of all play pits
+
+                // Top play pits
+                if (i < this.playPitsPerRow)
+                {
+                    offsetToLeft = playPitWidth + PIT_OFFSET + playPitWidth * i + PIT_OFFSET * i;
+                    posX = OFFSET_TO_BORDER + coords.X + offsetToLeft;
+                    posY = coords.Y;
+                }
+                // Bottom play pits
+                else
+                {
+                    offsetToLeft = playPitWidth + playPitWidth * (i - playPitsPerRow - 1) + PIT_OFFSET * (i - playPitsPerRow - 1);
+                    posX = homePitWidth + OFFSET_TO_BORDER + OFFSET_TO_BORDER + coords.X + offsetToLeft;
+                    posY = coords.Y + playPitWidth + PIT_OFFSET;
+                }
+
+                cPit.ScreenLoc = new Point(posX, posY);
+                cPit.Draw(gr);
             }
         }
 
@@ -189,7 +200,7 @@ namespace Mankala
         {
             // Homepits cleared
             this.pits[0].RemoveStone();
-            this.pits[(PitsTotal - 1)].RemoveStone();
+            this.pits[PitsTotal - 1].RemoveStone();
 
             // Each pit cleared and stones added
             for (int i = 0; i < this.PlayPitsTotal; i++)
@@ -202,32 +213,26 @@ namespace Mankala
         /* Get the next pit in counterclockwise direction */
         public Pit NextPit(Pit cPit)
         {
-            // Index of the current pits
-            int indexOfPit = cPit.IndexInList;
+            // Left home pit
+            if (cPit.IndexInList == HomePitLeft.IndexInList)
+            {
+                return this.pits[playPitsPerRow + 1]; 
+            }
 
-            // Index equal to right homepit
-            if (indexOfPit == PitsTotal - 1)
+            // Right home pit
+            if (cPit.IndexInList == HomePitRight.IndexInList)
             {
-                return this.pits[this.PlaysPitPerRow];
-            } 
-            // Index equal to left homepit
-            else if (indexOfPit == 0)
-            {
-                return this.pits[this.playPitsPerRow + 1];
+                return this.pits[playPitsPerRow];
             }
-            // Index equal to playpit
-            else
+
+            // Top play pits
+            if (cPit.IndexInList <= this.PlaysPitPerRow)
             {
-                // Determine whether to go left or right
-                if (indexOfPit <= playPitsPerRow)
-                {
-                    return this.pits[indexOfPit - 1];
-                }
-                else
-                {
-                    return this.pits[indexOfPit + 1];
-                }
+                return this.pits[cPit.IndexInList - 1];
             }
+
+            // Bottom play pits
+            return this.pits[cPit.IndexInList + 1];
         }
     }
 }

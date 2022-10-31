@@ -60,6 +60,12 @@ namespace Mankala
             }
         }
 
+        public void Draw(Graphics gr)
+        {
+            gr.FillEllipse(Brushes.Sienna, ScreenLoc.X, ScreenLoc.Y, width, height);
+            gr.DrawString(StonesAmount.ToString(), new Font("Trebuchet MS", 20), Brushes.Gold, ScreenLoc.X + (width / 3f), ScreenLoc.Y + (height / 3f));
+        }
+
         public void Fill(int stonesAmount)
         {
             for (int i = 0; i < stonesAmount; i++)

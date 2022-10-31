@@ -24,7 +24,7 @@ namespace Mankala
             this.game = new MancalaGame();
             this.DoubleBuffered = true;
             this.Paint += Draw;
-            this.MouseClick += Click;
+            this.MouseClick += ClickScreen;
         }
 
         // Draw event handler
@@ -35,7 +35,7 @@ namespace Mankala
         }
 
         // Click event handler
-        private void Click(object sender, MouseEventArgs mea)
+        private void ClickScreen(object sender, MouseEventArgs mea)
         {
             game.PerformTurn(mea.Location);
             this.Invalidate();

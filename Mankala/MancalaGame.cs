@@ -17,7 +17,7 @@ namespace Mankala
         // Player data 
         Player p1;
         Player p2;
-        public Player activePlayer;
+        Player activePlayer;
 
         // Board
         public Board board;
@@ -41,7 +41,7 @@ namespace Mankala
 
         public void DrawScore(Graphics gr)
         {
-            gr.DrawString($"Active player: {this.activePlayer}", new Font("Arial", 16), Brushes.Black, new Point(100, 50));
+            gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
         }
 
         public void PerformTurn(Point mouseLoc)
