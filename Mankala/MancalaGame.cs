@@ -28,10 +28,11 @@ namespace Mankala
 
         public MancalaGame(IMancalaFactory game)
         {
-            // NOTE: Placeholder values
-            this.board = new Board(6, 4);
             this.mancalaFactory = new MancalaFactory();
-            
+
+            // Initialize board with factory
+            this.board = mancalaFactory.CreateBoard();
+
             // Initialize strategies with factory
             this.scoreStrategy = mancalaFactory.CreateScore();
             this.turnStrategy = mancalaFactory.CreateTurn();
@@ -40,6 +41,10 @@ namespace Mankala
             this.p1 = new Player("P1", board.HomePitRight, board.HomePitLeft);
             this.p2 = new Player("P2", board.HomePitLeft, board.HomePitRight);
             this.activePlayer = p1;
+
+            // Assign the owners to the home pits
+            this.board.HomePitLeft.Owner = this.p1;
+            this.board.HomePitLeft.Owner = this.p2;
         }
 
         public void DrawScore(Graphics gr)
@@ -56,7 +61,14 @@ namespace Mankala
         public void DrawGameOver(Graphics gr)
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            gr.DrawString("Game Over!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
+
+            if (scoreStrategy.IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            {
+                gr.DrawString("Draw!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
+                return;
+            }
+
+            gr.DrawString($"{scoreStrategy.GetWinner(board).ToString()} has won!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
         }
 
         public void PerformTurn(Point mouseLoc)

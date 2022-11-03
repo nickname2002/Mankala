@@ -57,9 +57,19 @@ namespace Mankala
             return false;
         }
 
-        public Player[] GetWinner(Board board)
+        public Player? GetWinner(Board board)
         {
-            throw new NotImplementedException();
+            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            {
+                return null;
+            }
+
+            if (IsOnlyWinner(board, board.HomePitLeft))
+            {
+                return board.HomePitLeft.Owner;
+            }
+
+            return board.HomePitRight.Owner;
         }
 
         public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit lastPit)

@@ -9,6 +9,23 @@ namespace Mankala
 {
     public class HomePit : Pit
     {
+        private Player? owner;
+
+        public Player Owner
+        {
+            get 
+            { 
+                return owner; 
+            }
+            set
+            {
+                if (owner == null)
+                {
+                    this.owner = value;
+                }
+            }
+        }
+
         public HomePit(int indexInList) 
         {
             this.width = 80;

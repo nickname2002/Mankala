@@ -16,23 +16,6 @@ namespace Mankala
         // Array containing pits in board
         private Pit[] pits;
 
-        // Homepits
-        public Pit HomePitLeft
-        {
-            get
-            {
-                return pits[0];
-            }
-        }
-
-        public Pit HomePitRight
-        {
-            get
-            {
-                return pits[this.PitsTotal - 1];
-            }
-        }
-
         // Pit dimensions
         private int homePitWidth;
         private int homePitHeight;
@@ -42,6 +25,28 @@ namespace Mankala
         // Starting number of stones per pit
         private int startingStonesAmount;
         private int playPitsPerRow;
+
+        // Board graphical properties
+        private Point coords;
+        private int width;
+        private int height;
+
+        // Homepits
+        public HomePit HomePitLeft
+        {
+            get
+            {
+                return (HomePit)pits[0];
+            }
+        }
+
+        public HomePit HomePitRight
+        {
+            get
+            {
+                return (HomePit)pits[this.PitsTotal - 1];
+            }
+        }
 
         // Board dimensions
         public int PlaysPitPerRow 
@@ -76,10 +81,6 @@ namespace Mankala
             }
         }
 
-        private Point coords;
-        private int width;
-        private int height;
-
         public Board(int size, int startingStonesAmount)
         {
             // Init board size
@@ -108,16 +109,16 @@ namespace Mankala
         /* Fill board with pits */
         private void FillBoard()
         {
+            // Initialize play pits
             for (int i = 0; i < this.PitsTotal; i++)
             {
-                if (i == 0 || i == PitsTotal - 1)
+                if (i == 0 || i == this.PitsTotal - 1)
                 {
                     this.pits[i] = new HomePit(i);
+                    continue;
                 }
-                else
-                {
-                    this.pits[i] = new PlayPit(i);
-                }
+
+                this.pits[i] = new PlayPit(i);
             }
 
             // Add stones to the pits
