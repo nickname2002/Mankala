@@ -15,10 +15,49 @@ namespace Mankala
 
         public bool GameOver(Board board)
         {
-            throw new NotImplementedException();
+            // Draw
+            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            {
+                return true;
+            }
+
+            // Left player won
+            if (IsOnlyWinner(board, board.HomePitLeft))
+            {
+                return true;
+            }
+
+            // Right player won
+            if (IsOnlyWinner(board, board.HomePitRight))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public Player GetWinner(Board board)
+        public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight)
+        {
+            if (homePitLeft.StonesAmount == homePitRight.StonesAmount
+                   && homePitRight.StonesAmount == board.TotalStonesAmount / 2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsOnlyWinner(Board board, Pit homePit)
+        {
+            if (homePit.StonesAmount > (board.TotalStonesAmount / 2))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public Player[] GetWinner(Board board)
         {
             throw new NotImplementedException();
         }

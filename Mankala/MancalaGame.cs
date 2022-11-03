@@ -46,6 +46,17 @@ namespace Mankala
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
+
+            if (GameOver())
+            {
+                DrawGameOver(gr);
+            }
+        }
+
+        public void DrawGameOver(Graphics gr)
+        {
+            gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            gr.DrawString("Game Over!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
         }
 
         public void PerformTurn(Point mouseLoc)
@@ -57,13 +68,23 @@ namespace Mankala
                 return;
             }
 
+            if (!activePlayer.IsOwnedPit(clickedPit))
+            {
+                return;
+            }
+
             Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
             this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, lastPit);
         }
 
         public bool GameOver()
         {
-            throw new NotImplementedException();
+            if (scoreStrategy.GameOver(board))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool ResetGame()

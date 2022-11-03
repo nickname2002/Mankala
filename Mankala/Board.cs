@@ -67,7 +67,15 @@ namespace Mankala
                 return PlaysPitPerRow * 2 + 2;
             } 
         }
-        
+
+        public int TotalStonesAmount
+        {
+            get
+            {
+                return startingStonesAmount * this.PlayPitsTotal;
+            }
+        }
+
         private Point coords;
         private int width;
         private int height;

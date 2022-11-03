@@ -36,6 +36,29 @@ namespace Mankala
             this.opposingHomePit = opposingHomePit;
         }
 
+        /* Checks if a certain pit is owned by the player */
+        public bool IsOwnedPit(Pit sPit)
+        {
+            int indexSelectedPit = sPit.IndexInList;
+
+            if (this.homePit.IndexInList == 0)
+            {
+                if (indexSelectedPit <= this.OpposingHomePit.IndexInList / 2)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (indexSelectedPit > this.homePit.IndexInList / 2)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public override string ToString()
         {
             return this.strRep;
