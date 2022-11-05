@@ -33,5 +33,24 @@ namespace Mankala
 
             return cPit;
         }
+
+        public void OnEmptyFriendlyAction(Board board, Player cPlayer, Pit cPit)
+        {
+            if (cPit.ToString() == "HomePit")
+            {
+                return;
+            }
+
+            if (cPit.StonesAmount == 1 && cPlayer.IsOwnedPit(cPit))
+            {
+                // Get all stones from opposing pit
+                Pit opposingPit = board.OpposingPit(cPit);
+                int stonesToGain = opposingPit.StonesAmount;
+
+                // Move all stones from opposing pit to homepit
+                opposingPit.RemoveStone();
+                cPlayer.HomePit.Fill(stonesToGain);                
+            }
+        }
     }
 }

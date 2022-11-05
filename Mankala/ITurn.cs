@@ -9,5 +9,6 @@ namespace Mankala
     public interface ITurn
     {
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit);
+        public void OnEmptyFriendlyAction(Board board, Player cPlayer, Pit cPit);
     }
 }

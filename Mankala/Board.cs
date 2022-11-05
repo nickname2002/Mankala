@@ -243,5 +243,22 @@ namespace Mankala
             // Bottom play pits
             return this.pits[cPit.IndexInList + 1];
         }
+
+        /* Get the opposing pit of a certain pit on the board */
+        public Pit OpposingPit(Pit cPit)
+        {
+            int indexOpposingPit;
+
+            if (cPit.IndexInList < this.playPitsPerRow)
+            {
+                indexOpposingPit = cPit.IndexInList + this.playPitsPerRow;
+            }
+            else
+            {
+                indexOpposingPit = cPit.IndexInList - this.playPitsPerRow;
+            }
+
+            return this.pits[indexOpposingPit];
+        }
     }
 }

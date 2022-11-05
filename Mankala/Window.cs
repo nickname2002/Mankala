@@ -21,6 +21,7 @@ namespace Mankala
 
         // Game lables
         Button mancalaButton;
+        Button wariButton;
 
         // Constructor 
         public Window()
@@ -45,11 +46,25 @@ namespace Mankala
                 BackColor = Color.Sienna
             };
 
+            // Draw play buttons
+            wariButton = new Button
+            {
+                Text = "Wari",
+                Location = new Point((this.Width / 2) / 2 - 100, 350),
+                Size = new Size(200, 200),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Bodoni MT", 20),
+                ForeColor = Color.Gold,
+                BackColor = Color.Sienna
+            };
+
             // Button event handlers
             mancalaButton.Click += MancalaSelect;
+            wariButton.Click += WariSelect; 
 
             // Add labels to controls
             this.Controls.Add(mancalaButton);
+            this.Controls.Add(wariButton);
 
             // Window event handlers
             this.Paint += Draw;
@@ -92,6 +107,7 @@ namespace Mankala
 
             // Make sure all game options are visible
             mancalaButton.Visible = true;
+            wariButton.Visible = true;
         }
 
         /* Click event handler for the game option buttons */
@@ -101,8 +117,20 @@ namespace Mankala
             this.state = GameState.Playing;
 
             mancalaButton.Visible = false;
+            wariButton.Visible = false;
 
             this.Invalidate();
+        }
+
+        private void WariSelect(object sender, EventArgs ea)
+        {
+            this.game = new MancalaGame(new WariFactory());
+            this.state = GameState.Playing; 
+
+            wariButton.Visible = false;
+            mancalaButton.Visible = false; 
+
+            this.Invalidate(); 
         }
 
         /* Screen click event handler */

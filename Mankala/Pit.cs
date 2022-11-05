@@ -91,12 +91,22 @@ namespace Mankala
             return this.stones.Count;
         }
 
+        public bool IsEmpty()
+        {
+            return this.StonesAmount == 0;
+        }
+
         public bool Clicked(Point mouseLoc)
         {
             bool withinRangeX = mouseLoc.X > screenLoc.X && mouseLoc.X < screenLoc.X + this.width;
             bool withinRangeY = mouseLoc.Y > screenLoc.Y && mouseLoc.Y < screenLoc.Y + this.height;
 
             return withinRangeX && withinRangeY;
+        }
+
+        public override string ToString()
+        {
+            return this.GetType().ToString().Split('.')[1];
         }
     }
 }
