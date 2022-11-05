@@ -8,6 +8,30 @@ namespace Mankala
 {
     public class MancalaTurn : ITurn
     {
+        public Pit NextPit(Board board, Pit cPit)
+        {
+            // Left home pit
+            if (cPit.IndexInList == board.HomePitLeft.IndexInList)
+            {
+                return board.GetPit(board.PlaysPitPerRow + 1);
+            }
+
+            // Right home pit
+            if (cPit.IndexInList == board.HomePitRight.IndexInList)
+            {
+                return board.GetPit(board.PlaysPitPerRow);
+            }
+
+            // Top play pits
+            if (cPit.IndexInList <= board.PlaysPitPerRow)
+            {
+                return board.GetPit(cPit.IndexInList - 1);
+            }
+
+            // Bottom play pits
+            return board.GetPit(cPit.IndexInList + 1);
+        }
+
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
             Pit cPit = startingPit;
@@ -19,7 +43,7 @@ namespace Mankala
             // Move to pits in counterclockwise direction, add one stone
             while (stonesAmount != 0)
             {
-                cPit = board.NextPit(cPit);
+                cPit = NextPit(board, cPit);
 
                 // When hovering over an opposing homepit, don't add a stone
                 if (cPit.IndexInList == cPlayer.OpposingHomePit.IndexInList)
@@ -31,10 +55,13 @@ namespace Mankala
                 stonesAmount--;
             }
 
+            // Action performed when on last pit of move
+            CaptureSeeds(board, cPlayer, cPit);
+
             return cPit;
         }
 
-        public void OnEmptyFriendlyAction(Board board, Player cPlayer, Pit cPit)
+        public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
         {
             if (cPit.ToString() == "HomePit")
             {
@@ -45,7 +72,7 @@ namespace Mankala
             {
                 // Get all stones from opposing pit
                 Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.StonesAmount;
+                int stonesToGain = opposingPit.GetStone();
 
                 // Move all stones from opposing pit to homepit
                 opposingPit.RemoveStone();

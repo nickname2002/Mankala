@@ -219,31 +219,6 @@ namespace Mankala
             }
         }
 
-        /* Get the next pit in counterclockwise direction */
-        public Pit NextPit(Pit cPit)
-        {
-            // Left home pit
-            if (cPit.IndexInList == HomePitLeft.IndexInList)
-            {
-                return this.pits[playPitsPerRow + 1]; 
-            }
-
-            // Right home pit
-            if (cPit.IndexInList == HomePitRight.IndexInList)
-            {
-                return this.pits[playPitsPerRow];
-            }
-
-            // Top play pits
-            if (cPit.IndexInList <= this.PlaysPitPerRow)
-            {
-                return this.pits[cPit.IndexInList - 1];
-            }
-
-            // Bottom play pits
-            return this.pits[cPit.IndexInList + 1];
-        }
-
         /* Get the opposing pit of a certain pit on the board */
         public Pit OpposingPit(Pit cPit)
         {
@@ -259,6 +234,12 @@ namespace Mankala
             }
 
             return this.pits[indexOpposingPit];
+        }
+
+        /* Return the pit at a certain index in the board */ 
+        public Pit GetPit(int index)
+        {
+            return this.pits[index];
         }
     }
 }

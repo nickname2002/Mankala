@@ -15,7 +15,7 @@ namespace Mankala
 
         public IScore CreateScore()
         {
-            return new WariScore();
+            return new MancalaScore();
         }
 
         public ITurn CreateTurn()

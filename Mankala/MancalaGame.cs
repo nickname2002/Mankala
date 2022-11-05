@@ -91,7 +91,6 @@ namespace Mankala
             }
 
             Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
-            turnStrategy.OnEmptyFriendlyAction(board, activePlayer, lastPit);
 
             this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, lastPit);
         }
