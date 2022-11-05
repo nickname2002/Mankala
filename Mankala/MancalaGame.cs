@@ -43,8 +43,8 @@ namespace Mankala
             this.activePlayer = p1;
 
             // Assign the owners to the home pits
-            this.board.HomePitLeft.Owner = this.p1;
-            this.board.HomePitRight.Owner = this.p2;
+            this.board.HomePitLeft.Owner = this.p2;
+            this.board.HomePitRight.Owner = this.p1;
         }
 
         public void DrawScore(Graphics gr)
@@ -73,26 +73,22 @@ namespace Mankala
 
         public void PerformTurn(Point mouseLoc)
         {
+            if (GameOver())
+            {
+                return;
+            }
+
             Pit? clickedPit = board.ClickPit(mouseLoc);
 
-            if (clickedPit == null)
-            {
-                return;
-            }
-
-            if (clickedPit.IsEmpty())
-            {
-                return;
-            }
-
-            if (!activePlayer.IsOwnedPit(clickedPit))
+            if (clickedPit == null 
+                || clickedPit.IsEmpty() 
+                || !activePlayer.IsOwnedPit(clickedPit))
             {
                 return;
             }
 
             Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
-
-            this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, lastPit);
+            this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, clickedPit, lastPit);
         }
 
         public bool GameOver()

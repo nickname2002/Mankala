@@ -10,27 +10,78 @@ namespace Mankala
     {
         public bool GameOver(Board board)
         {
-            throw new NotImplementedException();
+            // Draw
+            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            {
+                return true;
+            }
+
+            // Left player won
+            if (IsOnlyWinner(board, board.HomePitLeft))
+            {
+                return true;
+            }
+
+            // Right player won
+            if (IsOnlyWinner(board, board.HomePitRight))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public Player? GetWinner(Board board)
         {
-            throw new NotImplementedException();
+            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            {
+                return null;
+            }
+
+            if (IsOnlyWinner(board, board.HomePitLeft))
+            {
+                return board.HomePitLeft.Owner;
+            }
+
+            return board.HomePitRight.Owner;
         }
 
         public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight)
         {
-            throw new NotImplementedException();
+            if (homePitLeft.StonesAmount == homePitRight.StonesAmount
+                   && homePitRight.StonesAmount == board.TotalStonesAmount / 2)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public bool IsOnlyWinner(Board board, Pit homepit)
+        public bool IsOnlyWinner(Board board, Pit homePit)
         {
-            throw new NotImplementedException();
+            // TODO: Needs additional rules
+
+            if (homePit.StonesAmount > (board.TotalStonesAmount / 2))
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit lastPit)
+        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit startPit, Pit lastPit)
         {
-            throw new NotImplementedException();
+            if (lastPit.IndexInList == startPit.IndexInList)
+            {
+                return cPlayer;
+            }
+
+            if (cPlayer == p1)
+            {
+                return p2;
+            }
+
+            return p1;
         }
     }
 }

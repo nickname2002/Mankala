@@ -72,7 +72,7 @@ namespace Mankala
             return board.HomePitRight.Owner;
         }
 
-        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit lastPit)
+        public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit startPit, Pit lastPit)
         {
             if (lastPit == cPlayer.HomePit)
             {

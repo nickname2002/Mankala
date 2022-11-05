@@ -37,8 +37,8 @@ namespace Mankala
             Pit cPit = startingPit;
 
             // Get stones from a pit
-            int stonesAmount = startingPit.GetStone();
-            startingPit.RemoveStone();
+            int stonesAmount = startingPit.GetStones();
+            startingPit.RemoveStones();
 
             // Move to pits in counterclockwise direction, add one stone
             while (stonesAmount != 0)
@@ -72,10 +72,10 @@ namespace Mankala
             {
                 // Get all stones from opposing pit
                 Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.GetStone();
+                int stonesToGain = opposingPit.GetStones();
 
                 // Move all stones from opposing pit to homepit
-                opposingPit.RemoveStone();
+                opposingPit.RemoveStones();
                 cPlayer.HomePit.Fill(stonesToGain);                
             }
         }

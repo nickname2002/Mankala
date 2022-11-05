@@ -60,6 +60,11 @@ namespace Mankala
             }
         }
 
+        public Pit()
+        {
+
+        }
+
         public void Draw(Graphics gr)
         {
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -81,12 +86,12 @@ namespace Mankala
             this.stones.Add(new Stone());
         }
 
-        public void RemoveStone()
+        public void RemoveStones()
         {
             this.stones.Clear();
         }
 
-        public int GetStone()
+        public int GetStones()
         {
             return this.stones.Count;
         }
@@ -108,5 +113,7 @@ namespace Mankala
         {
             return this.GetType().ToString().Split('.')[1];
         }
+
+        public abstract Pit Clone();
     }
 }

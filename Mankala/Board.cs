@@ -208,15 +208,45 @@ namespace Mankala
         public void ResetBoard()
         {
             // Homepits cleared
-            this.pits[0].RemoveStone();
-            this.pits[PitsTotal - 1].RemoveStone();
+            this.pits[0].RemoveStones();
+            this.pits[PitsTotal - 1].RemoveStones();
 
             // Each pit cleared and stones added
             for (int i = 0; i < this.PlayPitsTotal; i++)
             {
-                this.pits[i + 1].RemoveStone();
+                this.pits[i + 1].RemoveStones();
                 this.pits[i + 1].Fill(this.startingStonesAmount);
             }
+        }
+
+        /* Checks if a row of play pits is empty for a specific player */
+        public bool IsEmptyRow(Player player)
+        {
+            // Check for P1
+            if (player.HomePit.IndexInList == this.HomePitLeft.IndexInList)
+            {
+                for (int i = 1; i <= this.playPitsPerRow; i++)
+                {
+                    if (this.pits[i].GetStones() != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // Check for P2
+            if (player.HomePit.IndexInList == this.HomePitRight.IndexInList)
+            {
+                for (int i = this.HomePitRight.IndexInList; i >= this.playPitsPerRow + 1; i--)
+                {
+                    if (this.pits[i].GetStones() != 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /* Get the opposing pit of a certain pit on the board */
@@ -240,6 +270,45 @@ namespace Mankala
         public Pit GetPit(int index)
         {
             return this.pits[index];
+        }
+
+        /* Clone this instance of Board */
+        public Board Clone()
+        {
+            Board cBoard = new Board(this.PlaysPitPerRow, this.startingStonesAmount);
+
+            // Init board size
+            cBoard.playPitsPerRow = this.playPitsPerRow;
+
+            // Arrange array of pits
+            cBoard.startingStonesAmount = startingStonesAmount;
+            cBoard.pits = new Pit[(PlaysPitPerRow * 2) + 2];
+            
+            // Clone all pits in board
+            for (int i = 0; i < this.PitsTotal; i++)
+            {
+                cBoard.pits[i] = this.pits[i].Clone();
+            }
+
+            // Init pit sizes
+            cBoard.homePitWidth = pits[0].Width;
+            cBoard.homePitHeight = pits[0].Height;
+            cBoard.playPitWidth = pits[1].Width;
+            cBoard.playPitHeight = pits[1].Height;
+
+            // Set dimensions of board 
+            cBoard.width = (pits[0].Width * 2) + (pits[0].Width * cBoard.PlaysPitPerRow) + (PIT_OFFSET * (this.PlaysPitPerRow + 1)) + (2 * OFFSET_TO_BORDER);
+            cBoard.height = (pits[0].Height) + this.PlaysPitPerRow + OFFSET_TO_BORDER * 2;
+
+            // Set coordinates of board
+            cBoard.coords.X = (800 - cBoard.width) / 2;
+            cBoard.coords.Y = (600 - cBoard.height) / 2;
+
+            // Set homepit owners
+            cBoard.HomePitLeft.Owner = this.HomePitLeft.Owner;
+            cBoard.HomePitRight.Owner = this.HomePitRight.Owner;
+
+            return cBoard;
         }
     }
 }

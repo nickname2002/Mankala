@@ -16,5 +16,14 @@ namespace Mankala
             this.stones = new List<Stone>();
             this.index = indexInList;
         }
+
+        public override Pit Clone()
+        {
+            PlayPit clPit = new PlayPit(this.IndexInList);
+            clPit.width = this.width;
+            clPit.height = this.height;
+            clPit.Fill(this.StonesAmount);
+            return clPit;
+        }
     }
 }

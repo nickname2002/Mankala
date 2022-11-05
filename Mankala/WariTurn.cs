@@ -44,15 +44,27 @@ namespace Mankala
             return board.GetPit(cPit.IndexInList - 1);
         }
 
+        public bool IsValidTurn(Board board, Player cPlayer)
+        {
+            Player cOpponent = ((HomePit)cPlayer.OpposingHomePit).Owner;
+
+            if (board.IsEmptyRow(cOpponent))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
         {            
             if ((cPit.StonesAmount == 2 || cPit.StonesAmount == 3) && !cPlayer.IsOwnedPit(cPit))
             {
-                int stonesToGain = cPit.GetStone();
+                int stonesToGain = cPit.GetStones();
                 Pit prevPit = PreviousPit(board, cPit);
 
                 // Move stones to homepit player 
-                cPit.RemoveStone();
+                cPit.RemoveStones();
                 cPlayer.HomePit.Fill(stonesToGain);
 
                 CaptureSeeds(board, cPlayer, prevPit);
@@ -61,26 +73,54 @@ namespace Mankala
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            // Play cup more than 11 stones -> pass when this cup occurs
-            // Capturing pits when opponent pit and contains 2 or 3 stones
+            (Board, Pit) performedMove = PerformDummyMove(board.Clone(), cPlayer, startingPit.Clone());
+
+            if (IsValidTurn(performedMove.Item1, cPlayer))
+            {
+                Pit cPit = startingPit;
+
+                // Get stones from a pit
+                int stonesAmount = startingPit.GetStones();
+                startingPit.RemoveStones();
+
+                // Move to pits in counterclockwise direction, add one stone
+                while (stonesAmount != 0)
+                {
+                    cPit = NextPit(board, cPit);
+                    cPit.AddStone();
+                    stonesAmount--;
+                }
+
+                // Action performed when on last pit of move
+                CaptureSeeds(board, cPlayer, cPit);
+
+                return cPit;
+            }
+
+            return startingPit;
+        }
+
+        private (Board, Pit) PerformDummyMove(Board board, Player cPlayer, Pit startingPit)
+        {
             Pit cPit = startingPit;
+            Board dummyBoard = board;
 
             // Get stones from a pit
-            int stonesAmount = startingPit.GetStone();
-            startingPit.RemoveStone();
+            int stonesAmount = startingPit.GetStones();
+            startingPit.RemoveStones();
 
             // Move to pits in counterclockwise direction, add one stone
             while (stonesAmount != 0)
             {
-                cPit = NextPit(board, cPit);
+                cPit = NextPit(dummyBoard, cPit);
                 cPit.AddStone();
                 stonesAmount--;
             }
 
             // Action performed when on last pit of move
-            CaptureSeeds(board, cPlayer, cPit);
+            CaptureSeeds(dummyBoard, cPlayer, cPit);
 
-            return cPit;
+            return (dummyBoard, cPit);
         }
     }
 }
