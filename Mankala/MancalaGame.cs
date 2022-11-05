@@ -52,15 +52,21 @@ namespace Mankala
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
 
-            if (GameOver())
+            /*if (GameOver())
             {
                 DrawGameOver(gr);
-            }
+            }*/
+
+            DrawGameOver(gr);
         }
 
         public void DrawGameOver(Graphics gr)
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            // Draw message box
+            gr.FillRectangle(Brushes.Chocolate, 800 / 2 - 210, 600 / 2 - 160, 420, 320);
+            gr.FillRectangle(Brushes.Sienna, 800 / 2 - 200, 600 / 2 - 150, 400, 300);
 
             if (scoreStrategy.IsDraw(board, board.HomePitLeft, board.HomePitRight))
             {

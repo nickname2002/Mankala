@@ -97,17 +97,23 @@ namespace Mankala
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
             // Draw logo
-            Point logoPos = new Point(50, 40);
-            gr.FillEllipse(Brushes.Sienna, logoPos.X, logoPos.Y, 700, 200);
-            gr.DrawEllipse(new Pen(Brushes.Chocolate, 10), logoPos.X, logoPos.Y, 700, 200);
-            gr.DrawString("Mancala", new Font("Bodoni MT", 80), Brushes.Gold, new Point(logoPos.X + 135, logoPos.Y + 35));
+            /* Point logoPos = new Point(50, 40);
+             gr.FillEllipse(Brushes.Sienna, logoPos.X, logoPos.Y, 700, 200);
+             gr.DrawEllipse(new Pen(Brushes.Chocolate, 10), logoPos.X, logoPos.Y, 700, 200);
+             gr.DrawString("Mancala", new Font("Bodoni MT", 80), Brushes.Gold, new Point(logoPos.X + 135, logoPos.Y + 35));
+ */
+
+            gr.FillRectangle(Brushes.Chocolate, 800 / 2 - 210, 600 / 2 - 160, 420, 320);
+            gr.FillRectangle(Brushes.Sienna, 800 / 2 - 200, 600 / 2 - 150, 400, 300);
+            gr.DrawString("~   GAME OVER   ~", new Font("Bodoni MT", 30), Brushes.Gold, new Point(210, 170));
+            gr.DrawString("Player 2\nhas won!", new Font("Bodoni MT", 30), Brushes.Gold, new Point(210, 250));
 
             // Draw names
-            gr.DrawString("Isabelle de Wolf & Nick Jordan", new Font("Bodoni MT", 20), Brushes.Chocolate, new Point(logoPos.X + 175, logoPos.Y + 220));
+            //gr.DrawString("Isabelle de Wolf & Nick Jordan", new Font("Bodoni MT", 20), Brushes.Chocolate, new Point(logoPos.X + 175, logoPos.Y + 220));
 
             // Make sure all game options are visible
-            mancalaButton.Visible = true;
-            wariButton.Visible = true;
+            mancalaButton.Visible = false;
+            wariButton.Visible = false;
         }
 
         /* Click event handler for the game option buttons */
