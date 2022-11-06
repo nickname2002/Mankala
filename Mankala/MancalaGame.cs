@@ -52,29 +52,35 @@ namespace Mankala
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
 
-            /*if (GameOver())
+            if (GameOver())
             {
                 DrawGameOver(gr);
-            }*/
-
-            DrawGameOver(gr);
+            }
         }
 
         public void DrawGameOver(Graphics gr)
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            Font bodoniSmall = new Font("Bodoni MT", 25);
+            Font bodoniLarge = new Font("Bodoni MT", 30);
 
             // Draw message box
             gr.FillRectangle(Brushes.Chocolate, 800 / 2 - 210, 600 / 2 - 160, 420, 320);
             gr.FillRectangle(Brushes.Sienna, 800 / 2 - 200, 600 / 2 - 150, 400, 300);
 
+            // Display game state update and method to go to leave the game
+            gr.DrawString("~   GAME OVER   ~", bodoniLarge, Brushes.Gold, new Point(210, 170));
+            gr.DrawString("Press 'c' to continue.", bodoniSmall, Brushes.Gold, new Point(250, 395));
+
+            // Display message when the game resulted in a draw
             if (scoreStrategy.IsDraw(board, board.HomePitLeft, board.HomePitRight))
             {
-                gr.DrawString("Draw!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
+                gr.DrawString("The game resulted\n        in a draw!", bodoniLarge, Brushes.Gold, new Point(230, 260));
                 return;
             }
 
-            gr.DrawString($"{scoreStrategy.GetWinner(board)} has won!", new Font("Trebuchet MS", 50), Brushes.Purple, new Point(200, 500));
+            // Display message to show which player has won
+            gr.DrawString($"{scoreStrategy.GetWinner(board)} has won!", bodoniLarge, Brushes.Gold, new Point(290, 260));
         }
 
         public void PerformTurn(Point mouseLoc)
