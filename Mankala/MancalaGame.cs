@@ -100,8 +100,20 @@ namespace Mankala
                 return;
             }
 
+            SwitchPlayer(clickedPit);
+        }
+
+        /* Switch player turns */
+        private void SwitchPlayer(Pit clickedPit)
+        {
             Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
             this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, clickedPit, lastPit);
+        }
+
+        /* Pass player turn */
+        public void PassTurn()
+        {
+            this.activePlayer = this.activePlayer.Opponent;
         }
 
         public bool GameOver()

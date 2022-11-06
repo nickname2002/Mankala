@@ -222,7 +222,7 @@ namespace Mankala
         /* Checks if a row of play pits is empty for a specific player */
         public bool IsEmptyRow(Player player)
         {
-            // Check for P1
+            // Check for P2
             if (player.HomePit.IndexInList == this.HomePitLeft.IndexInList)
             {
                 for (int i = 1; i <= this.playPitsPerRow; i++)
@@ -234,10 +234,10 @@ namespace Mankala
                 }
             }
 
-            // Check for P2
+            // Check for P1
             if (player.HomePit.IndexInList == this.HomePitRight.IndexInList)
             {
-                for (int i = this.HomePitRight.IndexInList; i >= this.playPitsPerRow + 1; i--)
+                for (int i = this.playPitsPerRow; i < this.HomePitRight.IndexInList - 1; i++)
                 {
                     if (this.pits[i].GetStones() != 0)
                     {
@@ -270,6 +270,26 @@ namespace Mankala
         public Pit GetPit(int index)
         {
             return this.pits[index];
+        }
+
+        /* String representation of the board */
+        public override string ToString()
+        {
+            string res = "";
+
+            for (int i = 0; i <= this.playPitsPerRow; i++)
+            {
+                res += "  -  ";
+                res += this.pits[i].StonesAmount;
+            }
+            res += "\n";
+            for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList; i++)
+            {
+                res += "  -  ";
+                res += this.pits[i].StonesAmount;
+            }
+
+            return (res + "\n\n");
         }
 
         /* Clone this instance of Board */

@@ -29,6 +29,14 @@ namespace Mankala
             }
         }
 
+        public Player Opponent
+        {
+            get
+            {
+                return ((HomePit)opposingHomePit).Owner;
+            }
+        }
+
         public Player(string name, Pit homePit, Pit opposingHomePit)
         {
             this.strRep = name;

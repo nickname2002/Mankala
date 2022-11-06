@@ -44,7 +44,7 @@ namespace Mankala
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            if (!this.MovePossible(board, cPlayer) || startingPit.ToString() == "HomePit")
+            if (startingPit.ToString() == "HomePit")
             {
                 return startingPit;
             }

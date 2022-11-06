@@ -44,6 +44,16 @@ namespace Mankala
             return board.GetPit(cPit.IndexInList - 1);
         }
 
+        public bool MovePossible(Board board, Player cPlayer)
+        {
+            if (board.IsEmptyRow(cPlayer))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool IsValidTurn(Board board, Player cPlayer)
         {
             Player cOpponent = ((HomePit)cPlayer.OpposingHomePit).Owner;
