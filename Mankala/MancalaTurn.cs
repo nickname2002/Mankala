@@ -8,6 +8,16 @@ namespace Mankala
 {
     public class MancalaTurn : ITurn
     {
+        public bool MovePossible(Board board, Player cPlayer)
+        {
+            if (board.IsEmptyRow(cPlayer))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public Pit NextPit(Board board, Pit cPit)
         {
             // Left home pit
@@ -34,6 +44,11 @@ namespace Mankala
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
+            if (!this.MovePossible(board, cPlayer) || startingPit.ToString() == "HomePit")
+            {
+                return startingPit;
+            }
+
             Pit cPit = startingPit;
 
             // Get stones from a pit

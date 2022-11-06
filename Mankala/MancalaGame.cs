@@ -92,6 +92,7 @@ namespace Mankala
 
             Pit? clickedPit = board.ClickPit(mouseLoc);
 
+            // Checks whether a valid pit is clicked
             if (clickedPit == null 
                 || clickedPit.IsEmpty() 
                 || !activePlayer.IsOwnedPit(clickedPit))
