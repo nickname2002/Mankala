@@ -12,8 +12,7 @@ namespace Mankala
         public bool GameOver(Board board);
         public Player? GetWinner(Board board);
         public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight);
-        public bool IsOnlyWinner(Board board, Pit homepit);
-
+        public bool IsOnlyWinner(Player cPlayer);
         public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit startPit, Pit lastPit);
     }
 }

@@ -17,13 +17,13 @@ namespace Mankala
             }
 
             // Left player won
-            if (IsOnlyWinner(board, board.HomePitLeft))
+            if (IsOnlyWinner(board.HomePitLeft.Owner))
             {
                 return true;
             }
 
             // Right player won
-            if (IsOnlyWinner(board, board.HomePitRight))
+            if (IsOnlyWinner(board.HomePitRight.Owner))
             {
                 return true;
             }
@@ -38,7 +38,7 @@ namespace Mankala
                 return null;
             }
 
-            if (IsOnlyWinner(board, board.HomePitLeft))
+            if (IsOnlyWinner(board.HomePitLeft.Owner))
             {
                 return board.HomePitLeft.Owner;
             }
@@ -48,8 +48,7 @@ namespace Mankala
 
         public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight)
         {
-            if (homePitLeft.StonesAmount == homePitRight.StonesAmount
-                   && homePitRight.StonesAmount == board.TotalStonesAmount / 2)
+            if (homePitLeft.StonesAmount == homePitRight.StonesAmount)
             {
                 return true;
             }
@@ -57,11 +56,11 @@ namespace Mankala
             return false;
         }
 
-        public bool IsOnlyWinner(Board board, Pit homePit)
+        public bool IsOnlyWinner(Player cPlayer)
         {
             // TODO: Needs additional rules
 
-            if (homePit.StonesAmount > (board.TotalStonesAmount / 2))
+            if (cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount)
             {
                 return true;
             }

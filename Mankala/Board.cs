@@ -223,7 +223,7 @@ namespace Mankala
         public bool IsEmptyRow(Player player)
         {
             // Check for P2
-            if (player.HomePit.IndexInList == this.HomePitLeft.IndexInList)
+            if (player.ToString() == "P2")
             {
                 for (int i = 1; i <= this.playPitsPerRow; i++)
                 {
@@ -235,15 +235,18 @@ namespace Mankala
             }
 
             // Check for P1
-            if (player.HomePit.IndexInList == this.HomePitRight.IndexInList)
+            if (player.ToString() == "P1")
             {
-                for (int i = this.playPitsPerRow; i < this.HomePitRight.IndexInList - 1; i++)
+                Console.WriteLine("\n\n");
+                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
                 {
+                    Console.Write(this.pits[i].GetStones() + " - ");
                     if (this.pits[i].GetStones() != 0)
                     {
                         return false;
                     }
                 }
+                Console.WriteLine("\n\n");
             }
 
             return true;

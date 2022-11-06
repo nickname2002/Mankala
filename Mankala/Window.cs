@@ -11,8 +11,6 @@ namespace Mankala
 
     public class Window : Form
     {
-        Button passButton;
-
         // Screen dimensions
         const int WIDTH = 800;
         const int HEIGHT = 600;
@@ -61,19 +59,6 @@ namespace Mankala
                 BackColor = Color.Sienna
             };
 
-            // Initialize pass button
-            passButton = new Button
-            {
-                Text = "Pass Turn",
-                Location = new Point((this.Width / 2) - 50, 10),
-                Size = new Size(100, 50),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Bodoni MT", 15),
-                ForeColor = Color.Gold,
-                BackColor = Color.Sienna,
-                Visible = false
-            };
-
             // Button event handlers
             mancalaButton.Click += MancalaSelect;
             wariButton.Click += WariSelect;
@@ -81,7 +66,6 @@ namespace Mankala
             // Add labels to controls
             this.Controls.Add(mancalaButton);
             this.Controls.Add(wariButton);
-            this.Controls.Add(passButton);
 
             // Window event handlers
             this.Paint += Draw;
@@ -99,12 +83,8 @@ namespace Mankala
                     break;
 
                 case GameState.Playing:
-                    passButton.Visible = true;
                     game.DrawScore(pea.Graphics);
-                    if (!game.GameOver()) 
-                    { 
-                        game.board.Draw(pea.Graphics); 
-                    }
+                    game.board.Draw(pea.Graphics);
                     break;
 
                 default:
@@ -130,7 +110,6 @@ namespace Mankala
             // Handle visibility of all buttons
             mancalaButton.Visible = true;
             wariButton.Visible = true;
-            passButton.Visible = false;
         }
 
         /* Keyboard event handling */
@@ -153,7 +132,6 @@ namespace Mankala
         private void MancalaSelect(object sender, EventArgs ea)
         {
             this.game = new MancalaGame(new MancalaFactory());
-            this.passButton.Click += this.PassButtonHandler;
             this.state = GameState.Playing;
 
             mancalaButton.Visible = false;
@@ -165,19 +143,12 @@ namespace Mankala
         private void WariSelect(object sender, EventArgs ea)
         {
             this.game = new MancalaGame(new WariFactory());
-            this.passButton.Click += this.PassButtonHandler;
             this.state = GameState.Playing; 
 
             wariButton.Visible = false;
             mancalaButton.Visible = false; 
 
             this.Invalidate(); 
-        }
-
-        private void PassButtonHandler(object sender, EventArgs e)
-        {
-            this.game.PassTurn();
-            this.Invalidate();
         }
 
         /* Screen click event handler */

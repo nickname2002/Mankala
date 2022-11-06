@@ -50,7 +50,7 @@ namespace Mankala
         public void DrawScore(Graphics gr)
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            gr.DrawString($"Active player: {this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
+            gr.DrawString($"Active player:\n{this.activePlayer}", new Font("Trebuchet MS", 16), Brushes.Black, new Point(20, 20));
 
             if (GameOver())
             {
@@ -61,26 +61,25 @@ namespace Mankala
         public void DrawGameOver(Graphics gr)
         {
             gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            Font bodoniSmall = new Font("Bodoni MT", 25);
-            Font bodoniLarge = new Font("Bodoni MT", 30);
+            Font bodoniSmall = new Font("Bodoni MT", 20);
+            Font bodoniLarge = new Font("Bodoni MT", 25);
 
             // Draw message box
-            gr.FillRectangle(Brushes.Chocolate, 800 / 2 - 210, 600 / 2 - 160, 420, 320);
-            gr.FillRectangle(Brushes.Sienna, 800 / 2 - 200, 600 / 2 - 150, 400, 300);
+            gr.FillRectangle(Brushes.Chocolate, 800 / 2 - 205, 5, 410, 150);
+            gr.FillRectangle(Brushes.Sienna, 800 / 2 - 200, 10, 400, 140);
 
-            // Display game state update and method to go to leave the game
-            gr.DrawString("~   GAME OVER   ~", bodoniLarge, Brushes.Gold, new Point(210, 170));
-            gr.DrawString("Press 'c' to continue.", bodoniSmall, Brushes.Gold, new Point(250, 395));
+            // Display method to leave the game
+            gr.DrawString("Press 'c' to continue.", bodoniSmall, Brushes.Gold, new Point(280, 90));
 
             // Display message when the game resulted in a draw
             if (scoreStrategy.IsDraw(board, board.HomePitLeft, board.HomePitRight))
             {
-                gr.DrawString("The game resulted\n        in a draw!", bodoniLarge, Brushes.Gold, new Point(230, 260));
+                gr.DrawString("It's a Draw!", bodoniLarge, Brushes.Gold, new Point(275, 30));
                 return;
             }
 
             // Display message to show which player has won
-            gr.DrawString($"{scoreStrategy.GetWinner(board)} has won!", bodoniLarge, Brushes.Gold, new Point(290, 260));
+            gr.DrawString($"{scoreStrategy.GetWinner(board)} has won!", bodoniLarge, Brushes.Gold, new Point(310, 30));
         }
 
         public void PerformTurn(Point mouseLoc)
@@ -108,12 +107,6 @@ namespace Mankala
         {
             Pit lastPit = turnStrategy.PerformTurn(board, activePlayer, clickedPit);
             this.activePlayer = scoreStrategy.SwitchPlayer(activePlayer, p1, p2, clickedPit, lastPit);
-        }
-
-        /* Pass player turn */
-        public void PassTurn()
-        {
-            this.activePlayer = this.activePlayer.Opponent;
         }
 
         public bool GameOver()

@@ -15,31 +15,45 @@ namespace Mankala
 
         public bool GameOver(Board board)
         {
-            // Draw
-            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
-            {
-                return true;
-            }
+            Player p1 = board.HomePitLeft.Owner;
+            Player p2 = board.HomePitRight.Owner;
 
-            // Left player won
-            if (IsOnlyWinner(board, board.HomePitLeft))
+            if (board.IsEmptyRow(p1) || board.IsEmptyRow(p2) || WinningStonesAmountReached(board))
             {
-                return true;
-            }
+                // Draw
+                if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+                {
+                    return true;
+                }
 
-            // Right player won
-            if (IsOnlyWinner(board, board.HomePitRight))
-            {
-                return true;
+                // Left player won
+                if (IsOnlyWinner(p2))
+                {
+                    return true;
+                }
+
+                // Right player won
+                if (IsOnlyWinner(p1))
+                {
+                    return true;
+                }
             }
 
             return false;
+        }
+
+        public bool WinningStonesAmountReached(Board board)
+        {
+            int winningStonesAmount = board.TotalStonesAmount / 2;
+            int p1StonesAmount = board.HomePitRight.StonesAmount;
+            int p2StonesAmount = board.HomePitLeft.StonesAmount;
+
+            return p1StonesAmount > winningStonesAmount || p2StonesAmount > winningStonesAmount;
         }
 
         public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight)
         {
-            if (homePitLeft.StonesAmount == homePitRight.StonesAmount
-                   && homePitRight.StonesAmount == board.TotalStonesAmount / 2)
+            if (homePitLeft.StonesAmount == homePitRight.StonesAmount)
             {
                 return true;
             }
@@ -47,9 +61,9 @@ namespace Mankala
             return false;
         }
 
-        public bool IsOnlyWinner(Board board, Pit homePit)
+        public bool IsOnlyWinner(Player cPlayer)
         {
-            if (homePit.StonesAmount > (board.TotalStonesAmount / 2))
+            if (cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount)
             {
                 return true;
             }
@@ -64,7 +78,7 @@ namespace Mankala
                 return null;
             }
 
-            if (IsOnlyWinner(board, board.HomePitLeft))
+            if (IsOnlyWinner(board.HomePitLeft.Owner))
             {
                 return board.HomePitLeft.Owner;
             }
