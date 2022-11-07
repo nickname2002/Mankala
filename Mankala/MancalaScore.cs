@@ -18,28 +18,27 @@ namespace Mankala
             Player p1 = board.HomePitLeft.Owner;
             Player p2 = board.HomePitRight.Owner;
 
-            if (board.IsEmptyRow(p1) || board.IsEmptyRow(p2) || WinningStonesAmountReached(board))
+            // Check empty rows for each player
+            CheckForEmptyRow(board, p1);
+            CheckForEmptyRow(board, p2);
+
+            if (WinningStonesAmountReached(board))
             {
-                // Draw
-                if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
-                {
-                    return true;
-                }
-
-                // Left player won
-                if (IsOnlyWinner(p2))
-                {
-                    return true;
-                }
-
-                // Right player won
-                if (IsOnlyWinner(p1))
+                if (IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2))
                 {
                     return true;
                 }
             }
 
-            return false;
+            return WinningStonesAmountReached(board);
+        }
+
+        public void CheckForEmptyRow(Board board, Player cPlayer)
+        {
+            if (board.IsEmptyRow(cPlayer))
+            {
+                board.TransferToHomePit(cPlayer.Opponent);
+            }
         }
 
         public bool WinningStonesAmountReached(Board board)

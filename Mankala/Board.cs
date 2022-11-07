@@ -237,16 +237,13 @@ namespace Mankala
             // Check for P1
             if (player.ToString() == "P1")
             {
-                Console.WriteLine("\n\n");
                 for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
                 {
-                    Console.Write(this.pits[i].GetStones() + " - ");
                     if (this.pits[i].GetStones() != 0)
                     {
                         return false;
                     }
                 }
-                Console.WriteLine("\n\n");
             }
 
             return true;
@@ -267,6 +264,30 @@ namespace Mankala
             }
 
             return this.pits[indexOpposingPit];
+        }
+
+        /* Transfer all stones within a row of play pits to linked homepit */
+        public void TransferToHomePit(Player receiver)
+        {
+            // Check for P2
+            if (receiver.ToString() == "P2")
+            {
+                for (int i = 1; i <= this.playPitsPerRow; i++)
+                {
+                    receiver.HomePit.Fill(this.pits[i].StonesAmount);
+                    this.pits[i].RemoveStones();
+                }
+            }
+
+            // Check for P1
+            if (receiver.ToString() == "P1")
+            {
+                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
+                {
+                    receiver.HomePit.Fill(this.pits[i].StonesAmount);
+                    this.pits[i].RemoveStones();
+                }
+            }
         }
 
         /* Return the pit at a certain index in the board */ 
