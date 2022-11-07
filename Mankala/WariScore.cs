@@ -8,24 +8,25 @@ namespace Mankala
 {
     public class WariScore : IScore
     {
-        public bool GameOver(Board board)
+        public void CheckForEmptyRow(Board board, Player cPlayer)
         {
-            // Draw
-            if (IsDraw(board, board.HomePitLeft, board.HomePitRight))
+            if (board.IsEmptyRow(cPlayer))
             {
-                return true;
+                board.TransferToHomePit(cPlayer.Opponent);
             }
+        }
 
-            // Left player won
-            if (IsOnlyWinner(board.HomePitLeft.Owner))
-            {
-                return true;
-            }
+        public bool GameOver(ITurn turnStrategy, Board board)
+        {
+            Player p1 = board.HomePitRight.Owner;
+            Player p2 = board.HomePitLeft.Owner;
 
-            // Right player won
-            if (IsOnlyWinner(board.HomePitRight.Owner))
+            if (WinningStonesAmountReached(board))
             {
-                return true;
+                if (IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -81,6 +82,15 @@ namespace Mankala
             }
 
             return p1;
+        }
+
+        public bool WinningStonesAmountReached(Board board)
+        {
+            int winningStonesAmount = board.TotalStonesAmount / 2;
+            int p1StonesAmount = board.HomePitRight.StonesAmount;
+            int p2StonesAmount = board.HomePitLeft.StonesAmount;
+
+            return p1StonesAmount > winningStonesAmount || p2StonesAmount > winningStonesAmount;
         }
     }
 }

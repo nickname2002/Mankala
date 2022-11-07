@@ -13,7 +13,7 @@ namespace Mankala
 
         }
 
-        public bool GameOver(Board board)
+        public bool GameOver(ITurn turnStrategy, Board board)
         {
             Player p1 = board.HomePitLeft.Owner;
             Player p2 = board.HomePitRight.Owner;
@@ -30,7 +30,7 @@ namespace Mankala
                 }
             }
 
-            return WinningStonesAmountReached(board);
+            return false;
         }
 
         public void CheckForEmptyRow(Board board, Player cPlayer)

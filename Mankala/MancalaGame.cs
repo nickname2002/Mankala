@@ -111,7 +111,9 @@ namespace Mankala
 
         public bool GameOver()
         {
-            if (scoreStrategy.GameOver(board))
+            bool noPossibleMoves = !turnStrategy.MovePossible(board, p1) && !turnStrategy.MovePossible(board, p2);
+
+            if (scoreStrategy.GameOver(turnStrategy, board) || !turnStrategy.MovePossible(board, p1))
             {
                 return true;
             }

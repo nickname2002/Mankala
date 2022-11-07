@@ -167,6 +167,35 @@ namespace Mankala
             HomePitRight.Draw(gr);
         }
 
+        /* Get play pits of a specific player */
+        public List<Pit> GetPlayPits(Player owner)
+        {
+            List<Pit> playPits = new List<Pit>();
+
+            // Check for P1
+            if (owner.ToString() == "P1")
+            {
+                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
+                {
+                    playPits.Add(pits[i]);
+                }
+            }
+
+            // Check for P2
+            if (owner.ToString() == "P2")
+            {
+                for (int i = 1; i <= this.playPitsPerRow; i++)
+                {
+                    if (this.pits[i].GetStones() != 0)
+                    {
+                        playPits.Add(pits[i]);
+                    }
+                }
+            }
+
+            return playPits;
+        }
+
         /* Drawing play pits */
         private void DrawPlayPits(Graphics gr)
         {

@@ -46,7 +46,7 @@ namespace Mankala
 
         public bool MovePossible(Board board, Player cPlayer)
         {
-            if (board.IsEmptyRow(cPlayer))
+            if (!OpponentCanBeProvided(board, cPlayer) && board.IsEmptyRow(cPlayer))
             {
                 return false;
             }
@@ -56,14 +56,29 @@ namespace Mankala
 
         public bool IsValidTurn(Board board, Player cPlayer)
         {
-            Player cOpponent = ((HomePit)cPlayer.OpposingHomePit).Owner;
-
-            if (board.IsEmptyRow(cOpponent))
+            if (board.IsEmptyRow(cPlayer.Opponent))
             {
                 return false;
             }
 
             return true;
+        }
+
+        public bool OpponentCanBeProvided(Board board, Player cPlayer)
+        {
+            List<Pit> playPits = board.GetPlayPits(cPlayer);
+
+            foreach (Pit playPit in playPits)
+            {
+                (Board, Pit) dummyMove = PerformDummyTurn(board, cPlayer, playPit);
+
+                if (IsValidTurn(dummyMove.Item1, cPlayer))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
@@ -83,7 +98,18 @@ namespace Mankala
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            (Board, Pit) performedMove = PerformDummyMove(board.Clone(), cPlayer, startingPit.Clone());
+            if (!MovePossible(board, cPlayer))
+            {
+                List<Pit> playPits = board.GetPlayPits(cPlayer);
+
+                foreach (Pit playPit in playPits)
+                {
+                    cPlayer.HomePit.Fill(playPit.GetStones());
+                    playPit.RemoveStones();
+                }
+            }
+
+            (Board, Pit) performedMove = PerformDummyTurn(board, cPlayer, startingPit);
 
             if (IsValidTurn(performedMove.Item1, cPlayer))
             {
@@ -97,6 +123,13 @@ namespace Mankala
                 while (stonesAmount != 0)
                 {
                     cPit = NextPit(board, cPit);
+
+                    // If the current pit is equal to the starting pit of the move, continue
+                    if (cPit == startingPit)
+                    {
+                        continue;
+                    }
+
                     cPit.AddStone();
                     stonesAmount--;
                 }
@@ -110,19 +143,28 @@ namespace Mankala
             return startingPit;
         }
 
-        private (Board, Pit) PerformDummyMove(Board board, Player cPlayer, Pit startingPit)
+        public (Board, Pit) PerformDummyTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            Pit cPit = startingPit;
-            Board dummyBoard = board;
+            Pit copyStartingPit = startingPit.Clone();
+            Board dummyBoard = board.Clone();
 
             // Get stones from a pit
-            int stonesAmount = startingPit.GetStones();
-            startingPit.RemoveStones();
+            int stonesAmount = copyStartingPit.GetStones();
+            copyStartingPit.RemoveStones();
+
+            Pit cPit = copyStartingPit;
 
             // Move to pits in counterclockwise direction, add one stone
             while (stonesAmount != 0)
             {
                 cPit = NextPit(dummyBoard, cPit);
+
+                // If the current pit is equal to the starting pit of the move, continue
+                if (cPit == copyStartingPit)
+                {
+                    continue;
+                }
+
                 cPit.AddStone();
                 stonesAmount--;
             }
