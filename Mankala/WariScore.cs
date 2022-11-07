@@ -21,6 +21,10 @@ namespace Mankala
             Player p1 = board.HomePitRight.Owner;
             Player p2 = board.HomePitLeft.Owner;
 
+            // Check for empty rows for each player
+            CheckForEmptyRow(board, p1);
+            CheckForEmptyRow(board, p2);
+
             if (WinningStonesAmountReached(board))
             {
                 if (IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2))
@@ -59,8 +63,6 @@ namespace Mankala
 
         public bool IsOnlyWinner(Player cPlayer)
         {
-            // TODO: Needs additional rules
-
             if (cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount)
             {
                 return true;

@@ -8,11 +8,6 @@ namespace Mankala
 {
     public class MancalaScore : IScore
     {
-        public MancalaScore()
-        {
-
-        }
-
         public bool GameOver(ITurn turnStrategy, Board board)
         {
             Player p1 = board.HomePitLeft.Owner;

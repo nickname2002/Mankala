@@ -22,6 +22,7 @@ namespace Mankala
         // Game lables
         Button mancalaButton;
         Button wariButton;
+        Button canaryButton;
 
         // Constructor 
         public Window()
@@ -35,7 +36,7 @@ namespace Mankala
             this.MaximizeBox = false;
             this.KeyPreview = true;
 
-            // Initialize play buttons
+            // Initialize Mancala play buttons
             mancalaButton = new Button
             {
                 Text = "Mancala Traditional",
@@ -47,11 +48,23 @@ namespace Mankala
                 BackColor = Color.Sienna
             };
 
-            // Initialize play buttons
+            // Initialize Wari play buttons
             wariButton = new Button
             {
                 Text = "Wari",
                 Location = new Point((this.Width / 2) / 2 - 100, 350),
+                Size = new Size(200, 200),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Bodoni MT", 20),
+                ForeColor = Color.Gold,
+                BackColor = Color.Sienna
+            };
+
+            // Initialize Canary play buttons
+            canaryButton = new Button
+            {
+                Text = "Canary",
+                Location = new Point((this.Width / 2) + 103, 350),
                 Size = new Size(200, 200),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Bodoni MT", 20),
@@ -66,6 +79,7 @@ namespace Mankala
             // Add labels to controls
             this.Controls.Add(mancalaButton);
             this.Controls.Add(wariButton);
+            this.Controls.Add(canaryButton);
 
             // Window event handlers
             this.Paint += Draw;
@@ -108,8 +122,7 @@ namespace Mankala
             gr.DrawString("Isabelle de Wolf & Nick Jordan", new Font("Bodoni MT", 20), Brushes.Chocolate, new Point(logoPos.X + 175, logoPos.Y + 220));
 
             // Handle visibility of all buttons
-            mancalaButton.Visible = true;
-            wariButton.Visible = true;
+            TogglePlayButtons();
         }
 
         /* Keyboard event handling */
@@ -134,8 +147,7 @@ namespace Mankala
             this.game = new MancalaGame(new MancalaFactory());
             this.state = GameState.Playing;
 
-            mancalaButton.Visible = false;
-            wariButton.Visible = false;
+            this.TogglePlayButtons();
 
             this.Invalidate();
         }
@@ -143,10 +155,9 @@ namespace Mankala
         private void WariSelect(object sender, EventArgs ea)
         {
             this.game = new MancalaGame(new WariFactory());
-            this.state = GameState.Playing; 
+            this.state = GameState.Playing;
 
-            wariButton.Visible = false;
-            mancalaButton.Visible = false; 
+            this.TogglePlayButtons(); 
 
             this.Invalidate(); 
         }
@@ -159,6 +170,14 @@ namespace Mankala
                 game.PerformTurn(mea.Location);
                 this.Invalidate();
             }
+        }
+
+        /* Toggle play buttons */
+        private void TogglePlayButtons()
+        {
+            this.mancalaButton.Visible = !this.mancalaButton.Visible;
+            this.wariButton.Visible = !this.wariButton.Visible;
+            this.canaryButton.Visible = !this.canaryButton.Visible;
         }
     }
 }

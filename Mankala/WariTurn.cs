@@ -46,7 +46,7 @@ namespace Mankala
 
         public bool MovePossible(Board board, Player cPlayer)
         {
-            if (!OpponentCanBeProvided(board, cPlayer) && board.IsEmptyRow(cPlayer))
+            if (board.IsEmptyRow(cPlayer))
             {
                 return false;
             }
@@ -62,23 +62,6 @@ namespace Mankala
             }
 
             return true;
-        }
-
-        public bool OpponentCanBeProvided(Board board, Player cPlayer)
-        {
-            List<Pit> playPits = board.GetPlayPits(cPlayer);
-
-            foreach (Pit playPit in playPits)
-            {
-                (Board, Pit) dummyMove = PerformDummyTurn(board, cPlayer, playPit);
-
-                if (IsValidTurn(dummyMove.Item1, cPlayer))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
@@ -98,17 +81,6 @@ namespace Mankala
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            if (!MovePossible(board, cPlayer))
-            {
-                List<Pit> playPits = board.GetPlayPits(cPlayer);
-
-                foreach (Pit playPit in playPits)
-                {
-                    cPlayer.HomePit.Fill(playPit.GetStones());
-                    playPit.RemoveStones();
-                }
-            }
-
             (Board, Pit) performedMove = PerformDummyTurn(board, cPlayer, startingPit);
 
             if (IsValidTurn(performedMove.Item1, cPlayer))
