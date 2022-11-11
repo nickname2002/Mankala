@@ -78,7 +78,76 @@ namespace MancalaTest
             Assert.Equal(expected, actualResult);
         }
 
+        [Theory]
+        [InlineData(0, new int[] { 1, 1, 1, 0, 1 }, new int[] { 5, 5, 5, 5, 5 }, 0, true)]
+        public void TestIsValidTurnLeft(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, bool expected)
+        {
+            //Arrange 
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            WariTurn turnStrategy = new WariTurn();
 
+            //Act
+            bool actual = turnStrategy.IsValidTurn(b, b.HomePitLeft.Owner);
+
+            //Assert
+            Assert.Equal(expected, actual); 
+        }
+
+
+        [Theory]
+        [InlineData(0, new int[] { 1, 1, 1, 0, 1 }, new int[] { 5, 5, 5, 5, 5 }, 0, true)]
+        public void TestIsValidTurnRight(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, bool expected)
+        {
+            //Arrange 
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            WariTurn turnStrategy = new WariTurn();
+
+            //Act
+            bool actual = turnStrategy.IsValidTurn(b, b.HomePitRight.Owner);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+       
+        [Theory]
+        [InlineData(0, new int[] { 7, 7, 2, 2, 4 }, new int[] { 4, 3, 0, 1, 2}, 2, 3, 6 )]
+        [InlineData(0, new int[] { 7, 7, 2, 2, 4 }, new int[] { 4, 3, 0, 1, 2 }, 0, 3, 4)]
+        [InlineData(0, new int[] { 1, 1, 1, 0, 1 }, new int[] { 4, 3, 0, 1, 2 }, 0, 3, 0)]
+        private void CaptureSeedsRightPlayer(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, int pitIndex, int expectedResult)
+        {
+            // Arrange
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            ITurn turnStrategy = new WariTurn();
+            Pit cPit = b.GetPit(pitIndex);
+
+            // Act
+            turnStrategy.CaptureSeeds(b, b.HomePitRight.Owner, cPit);
+            int actualResult = b.HomePitRight.StonesAmount;
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+
+        [Theory]
+        [InlineData(0, new int[] { 7, 7, 2, 2, 4 }, new int[] { 4, 3, 2, 5, 5 }, 0, 7, 5)]
+        [InlineData(7, new int[] { 7, 7, 2, 2, 4 }, new int[] { 4, 3, 2, 5, 5 }, 0, 7, 12)]
+        [InlineData(2, new int[] { 1, 1, 1, 0, 1 }, new int[] { 4, 3, 0, 1, 2 }, 0, 10, 2)]
+        private void CaptureSeedsLeftPlayer(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, int pitIndex, int expectedResult)
+        {
+            // Arrange
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            ITurn turnStrategy = new WariTurn();
+            Pit cPit = b.GetPit(pitIndex);
+
+            // Act
+            turnStrategy.CaptureSeeds(b, b.HomePitLeft.Owner, cPit);
+            int actualResult = b.HomePitLeft.StonesAmount;
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
 
         private static Board CreateFakeBoard(int leftHomePit, int[] upper, int[] bottom, int rightHomePit)
         {

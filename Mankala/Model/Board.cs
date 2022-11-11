@@ -18,9 +18,7 @@ namespace Mancala
 
         // Pit dimensions
         private int homePitWidth;
-        private int homePitHeight;
         private int playPitWidth;
-        private int playPitHeight;
 
         // Starting number of stones per pit
         private int startingStonesAmount;
@@ -51,9 +49,7 @@ namespace Mancala
 
             // Init pit sizes
             this.homePitWidth = pits[0].Width;
-            this.homePitHeight = pits[0].Height;
             this.playPitWidth = pits[1].Width;
-            this.playPitHeight = pits[1].Height;
 
             // Set dimensions of board 
             this.width = (pits[0].Width * 2) + (pits[0].Width * this.PlaysPitPerRow) + (PIT_OFFSET * (this.PlaysPitPerRow + 1)) + (2 * OFFSET_TO_BORDER);
@@ -168,7 +164,7 @@ namespace Mancala
                 int posY;
                 int offsetToLeft;
 
-                // Determine coordinates of all play pits
+                /* Determine coordinates of all play pits */
 
                 // Top play pits
                 if (i < this.playPitsPerRow)
@@ -276,7 +272,6 @@ namespace Mancala
             return this.pits[index];
         }
 
-
         /* Clone this instance of Board */
         public Board Clone()
         {
@@ -297,9 +292,7 @@ namespace Mancala
 
             // Init pit sizes
             cBoard.homePitWidth = pits[0].Width;
-            cBoard.homePitHeight = pits[0].Height;
             cBoard.playPitWidth = pits[1].Width;
-            cBoard.playPitHeight = pits[1].Height;
 
             // Set dimensions of board 
             cBoard.width = (pits[0].Width * 2) + (pits[0].Width * cBoard.PlaysPitPerRow) + (PIT_OFFSET * (this.PlaysPitPerRow + 1)) + (2 * OFFSET_TO_BORDER);

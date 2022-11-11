@@ -3,6 +3,7 @@ using Mancala;
 using System.Windows.Forms;
 using System.Drawing;
 using System;
+using System.Collections.Generic;
 
 namespace MancalaTest
 {
@@ -25,8 +26,6 @@ namespace MancalaTest
             //Assert 
             Assert.Null(clickedPit);
         }
-
-        // TODO: Test GetPlayPits
         
         /* Check whether the correct opposing pit of a play pit is calculated */
         [Theory]
@@ -49,8 +48,6 @@ namespace MancalaTest
             // Assert
             Assert.Equal(expectedIndex, actualIndex);
         }
-
-        // TODO: Transfer to homepit
         
         /* Check whether the correct pit is returned at a certain index */
         [Theory]
@@ -70,6 +67,41 @@ namespace MancalaTest
 
             // Assert
             Assert.Equal(fetchedPit.IndexInList, index);
+        }
+
+        private static Board CreateFakeBoard(int leftHomePit, int[] upper, int[] bottom, int rightHomePit)
+        {
+            WariFactory factory = new WariFactory();
+
+            Board b = new Board(upper.Length, 5);
+            Player p1 = factory.CreatePlayer(b, PlayerID.P1);
+            Player p2 = factory.CreatePlayer(b, PlayerID.P2);
+
+            // Create left home pit
+            b.HomePitLeft.RemoveStones();
+            b.HomePitLeft.Fill(leftHomePit);
+
+            // Create upper row
+            for (int i = 0; i < upper.Length; i++)
+            {
+                Pit cPit = b.GetPit(i + 1);
+                cPit.RemoveStones();
+                cPit.Fill(upper[i]);
+            }
+
+            // Create bottom row
+            for (int i = 0; i < bottom.Length; i++)
+            {
+                Pit cPit = b.GetPit(i + upper.Length);
+                cPit.RemoveStones();
+                cPit.Fill(bottom[i]);
+            }
+
+            // Create right home pit
+            b.HomePitRight.RemoveStones();
+            b.HomePitRight.Fill(rightHomePit);
+
+            return b;
         }
     }
 }

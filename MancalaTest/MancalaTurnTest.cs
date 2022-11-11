@@ -29,6 +29,40 @@ namespace MancalaTest
         }
 
         [Theory]
+        [InlineData(20, new int[] { 0, 0, 0, 2, 0 }, new int[] { 2, 3, 4, 2, 1 }, 16, 4, 20)]
+        private void CaptureSeedsLeftPlayer(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, int pitIndex, int expectedResult)
+        {
+            // Arrange
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            ITurn turnStrategy = new MancalaTurn();
+            Pit cPit = b.GetPit(pitIndex);
+
+            // Act
+            turnStrategy.CaptureSeeds(b, b.HomePitLeft.Owner, cPit);
+            int actualResult = b.HomePitLeft.StonesAmount;
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [InlineData(20, new int[] { 0, 0, 0, 2, 0 }, new int[] { 2, 3, 4, 2, 1 }, 16, 10, 16)]
+        private void CaptureSeedsRightPlayer(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, int pitIndex, int expectedResult)
+        {
+            // Arrange
+            Board b = CreateFakeBoard(leftHomePit, upper, bottom, rightHomePit);
+            ITurn turnStrategy = new MancalaTurn();
+            Pit cPit = b.GetPit(pitIndex);
+
+            // Act
+            turnStrategy.CaptureSeeds(b, b.HomePitRight.Owner, cPit);
+            int actualResult = b.HomePitRight.StonesAmount;
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
         [InlineData(0, new int[] { 5, 5, 5, 5, 5 }, new int[] { 5, 5, 5, 5, 5 }, 0, 7, false)]
         [InlineData(25, new int[] { 0, 0, 0, 0, 0 }, new int[] { 0, 1, 1, 0, 1 }, 25, 2, true)]
         public void TestPitOwnedByPlayerLeft(int leftHomePit, int[] upper, int[] bottom, int rightHomePit, int index, bool expected)
