@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace Mancala
 {
-    public enum GameType { Mancala, Wari }
     public enum PlayerID { P1, P2 }
 
     public class MancalaGame
