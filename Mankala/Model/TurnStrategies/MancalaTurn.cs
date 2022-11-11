@@ -8,11 +8,6 @@ namespace Mancala
 {
     public class MancalaTurn : ITurn
     {
-        public bool MovePossible(Board board, Player cPlayer)
-        {
-            return !board.IsEmptyRow(cPlayer);
-        }
-
         public Pit NextPit(Board board, Pit cPit)
         {
             // Left home pit

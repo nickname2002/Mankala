@@ -233,7 +233,6 @@ namespace Mancala
                             return false;
                         }
                     }
-
                     break;
                 }
             }
@@ -246,7 +245,7 @@ namespace Mancala
         {
             int indexOpposingPit;
 
-            if (cPit.IndexInList < this.playPitsPerRow)
+            if (cPit.IndexInList <= this.playPitsPerRow)
             {
                 indexOpposingPit = cPit.IndexInList + this.playPitsPerRow;
             }

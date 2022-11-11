@@ -68,11 +68,6 @@ namespace Mancala
             return board.GetPit(cPit.IndexInList - 1);
         }
 
-        public bool MovePossible(Board board, Player cPlayer)
-        {
-            return !board.IsEmptyRow(cPlayer);
-        }
-
         public bool IsValidTurn(Board board, Player cPlayer)
         {
             return !board.IsEmptyRow(cPlayer.Opponent);
