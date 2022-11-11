@@ -5,42 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms; 
 
-namespace Mankala
+namespace Mancala
 {
     public class Player
     {
-        private string strRep;
-        private Pit homePit;
-        private Pit opposingHomePit;
+        private readonly string strRep;
+        private readonly Pit opposingHomePit;
 
-        public Pit HomePit
-        {
-            get 
-            { 
-                return homePit; 
-            }
-        }
-
-        public Pit OpposingHomePit
-        {
-            get
-            {
-                return opposingHomePit;
-            }
-        }
-
-        public Player Opponent
-        {
-            get
-            {
-                return ((HomePit)opposingHomePit).Owner;
-            }
-        }
+        // Player properties
+        public Pit HomePit { get; }
+        public Pit OpposingHomePit => opposingHomePit;
+        public Player Opponent => ((HomePit)opposingHomePit).Owner;
 
         public Player(string name, Pit homePit, Pit opposingHomePit)
         {
             this.strRep = name;
-            this.homePit = homePit;
+            this.HomePit = homePit;
             this.opposingHomePit = opposingHomePit;
         }
 

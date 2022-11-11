@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Mankala
+namespace Mancala
 {
     public class HomePit : Pit
     {
@@ -13,10 +13,7 @@ namespace Mankala
 
         public Player Owner
         {
-            get 
-            { 
-                return owner; 
-            }
+            get => owner;
             set
             {
                 if (owner == null)
@@ -36,9 +33,12 @@ namespace Mankala
 
         public override Pit Clone()
         {
-            HomePit clPit = new HomePit(this.IndexInList);
-            clPit.width = this.width;
-            clPit.height = this.height;
+            HomePit clPit = new HomePit(this.IndexInList)
+            {
+                width = this.width,
+                height = this.height
+            };
+
             clPit.Fill(this.StonesAmount);
             return clPit;
         }

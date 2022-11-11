@@ -5,13 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms; 
 
-namespace Mankala
+namespace Mancala
 {
     public class Stone
     {
-        public Stone()
-        {
 
-        }
     }
 }

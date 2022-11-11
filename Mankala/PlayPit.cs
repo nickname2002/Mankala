@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms; 
 
-namespace Mankala
+namespace Mancala
 {
     public class PlayPit : Pit
     {
@@ -19,9 +19,12 @@ namespace Mankala
 
         public override Pit Clone()
         {
-            PlayPit clPit = new PlayPit(this.IndexInList);
-            clPit.width = this.width;
-            clPit.height = this.height;
+            PlayPit clPit = new PlayPit(this.IndexInList)
+            {
+                width = this.width,
+                height = this.height
+            };
+
             clPit.Fill(this.StonesAmount);
             return clPit;
         }

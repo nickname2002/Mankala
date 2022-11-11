@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mankala
+namespace Mancala
 {
     public class CanaryTurn : ITurn
     {
@@ -21,38 +21,35 @@ namespace Mankala
             }
 
             // Fetch all stones from current and opposing play pit when their stones amount are equal
-            if (cPit.StonesAmount == board.OpposingPit(cPit).StonesAmount)
+            if (cPit.StonesAmount != board.OpposingPit(cPit).StonesAmount)
             {
-                // Get all stones from opposing and current pit
-                Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.GetStones() + cPit.GetStones();
-
-                // Move all stones from play pits to homepit
-                opposingPit.RemoveStones();
-                cPit.RemoveStones();
-                cPlayer.HomePit.Fill(stonesToGain);
+                return;
             }
+            
+            // Get all stones from opposing and current pit
+            Pit opposingPit = board.OpposingPit(cPit);
+            int stonesToGain = opposingPit.GetStones() + cPit.GetStones();
+
+            // Move all stones from play pits to home pit
+            opposingPit.RemoveStones();
+            cPit.RemoveStones();
+            cPlayer.HomePit.Fill(stonesToGain);
         }
 
         public bool MovePossible(Board board, Player cPlayer)
         {
-            if (board.IsEmptyRow(cPlayer))
-            {
-                return false;
-        }
-
-            return true;
+            return !board.IsEmptyRow(cPlayer);
         }
 
         public Pit NextPit(Board board, Pit cPit)
         {
-            // Left homepit
+            // Left home pit
             if (cPit.IndexInList == board.PlaysPitPerRow + 1)
             {
                 return board.HomePitLeft;
             }
 
-            // Right homepit
+            // Right home pit
             if (cPit.IndexInList == board.PlaysPitPerRow)
             {
                 return board.HomePitRight;
@@ -86,7 +83,7 @@ namespace Mankala
             {
                 cPit = NextPit(board, cPit);
 
-                // When hovering over an opposing homepit, don't add a stone
+                // When hovering over an opposing home pit, don't add a stone
                 if (cPit.IndexInList == cPlayer.OpposingHomePit.IndexInList)
                 {
                     continue;
@@ -96,7 +93,7 @@ namespace Mankala
                 stonesAmount--;
             }
 
-            // Action performed whne on last pit of move
+            // Action performed when on last pit of move
             CaptureSeeds(board, cPlayer, cPit);
 
             return cPit;
@@ -115,7 +112,7 @@ namespace Mankala
                     return true;
                 }
             }
-            // Check for right homepit owner
+            // Check for right home pit owner
             else
             {
                 if (indexSelectedPit <= board.PlaysPitPerRow && indexSelectedPit != board.HomePitLeft.IndexInList)

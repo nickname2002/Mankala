@@ -1,4 +1,4 @@
-﻿namespace Mankala
+﻿namespace Mancala
 {
     partial class Form1
     {

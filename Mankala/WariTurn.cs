@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mankala
+namespace Mancala
 {
     public class WariTurn : ITurn
     {
@@ -68,73 +68,69 @@ namespace Mankala
 
         public bool MovePossible(Board board, Player cPlayer)
         {
-            if (board.IsEmptyRow(cPlayer))
-            {
-                return false;
-            }
-
-            return true;
+            return !board.IsEmptyRow(cPlayer);
         }
 
         public bool IsValidTurn(Board board, Player cPlayer)
         {
-            if (board.IsEmptyRow(cPlayer.Opponent))
-            {
-                return false;
-            }
-
-            return true;
+            return !board.IsEmptyRow(cPlayer.Opponent);
         }
 
         public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
-        {            
-            if ((cPit.StonesAmount == 2 || cPit.StonesAmount == 3) && !PitOwnedByPlayer(board, cPlayer, cPit))
+        {
+            while (true)
             {
+                if ((cPit.StonesAmount != 2 && cPit.StonesAmount != 3) || PitOwnedByPlayer(board, cPlayer, cPit))
+                {
+                    return;
+                }
+
                 int stonesToGain = cPit.GetStones();
                 Pit prevPit = PreviousPit(board, cPit);
 
-                // Move stones to homepit player 
+                // Move stones to home pit player 
                 cPit.RemoveStones();
                 cPlayer.HomePit.Fill(stonesToGain);
 
-                CaptureSeeds(board, cPlayer, prevPit);
+                cPit = prevPit;
             }
         }
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
         {
-            (Board, Pit) performedMove = PerformDummyTurn(board, cPlayer, startingPit);
+            var performedMove = PerformDummyTurn(board, cPlayer, startingPit);
 
-            if (IsValidTurn(performedMove.Item1, cPlayer))
+            if (!IsValidTurn(performedMove.Item1, cPlayer))
             {
-                Pit cPit = startingPit;
-
-                // Get stones from a pit
-                int stonesAmount = startingPit.GetStones();
-                startingPit.RemoveStones();
-
-                // Move to pits in counterclockwise direction, add one stone
-                while (stonesAmount != 0)
-                {
-                    cPit = NextPit(board, cPit);
-
-                    // If the current pit is equal to the starting pit of the move, continue
-                    if (cPit == startingPit)
-                    {
-                        continue;
-                    }
-
-                    cPit.AddStone();
-                    stonesAmount--;
-                }
-
-                // Action performed when on last pit of move
-                CaptureSeeds(board, cPlayer, cPit);
-
-                return cPit;
+                return startingPit;
             }
 
-            return startingPit;
+            Pit cPit = startingPit;
+
+            // Get stones from a pit
+            int stonesAmount = startingPit.GetStones();
+            startingPit.RemoveStones();
+
+            // Move to pits in counterclockwise direction, add one stone
+            while (stonesAmount != 0)
+            {
+                cPit = NextPit(board, cPit);
+
+                // If the current pit is equal to the starting pit of the move, continue
+                if (cPit == startingPit)
+                {
+                    continue;
+                }
+
+                cPit.AddStone();
+                stonesAmount--;
+            }
+
+            // Action performed when on last pit of move
+            CaptureSeeds(board, cPlayer, cPit);
+
+            return cPit;
+
         }
 
         public (Board, Pit) PerformDummyTurn(Board board, Player cPlayer, Pit startingPit)

@@ -1,9 +1,9 @@
-namespace Mankala
+namespace Mancala
 {
     internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Window screen = new Window();
             Application.Run(screen);

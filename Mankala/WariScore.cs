@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mankala
+namespace Mancala
 {
     public class WariScore : IScore
     {
@@ -25,15 +25,12 @@ namespace Mankala
             CheckForEmptyRow(board, p1);
             CheckForEmptyRow(board, p2);
 
-            if (WinningStonesAmountReached(board))
+            if (!WinningStonesAmountReached(board))
             {
-                if (IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2))
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            return IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2);
         }
 
         public Player? GetWinner(Board board)
@@ -43,32 +40,17 @@ namespace Mankala
                 return null;
             }
 
-            if (IsOnlyWinner(board.HomePitLeft.Owner))
-            {
-                return board.HomePitLeft.Owner;
-            }
-
-            return board.HomePitRight.Owner;
+            return IsOnlyWinner(board.HomePitLeft.Owner) ? board.HomePitLeft.Owner : board.HomePitRight.Owner;
         }
 
         public bool IsDraw(Board board, Pit homePitLeft, Pit homePitRight)
         {
-            if (homePitLeft.StonesAmount == homePitRight.StonesAmount)
-            {
-                return true;
-            }
-
-            return false;
+            return homePitLeft.StonesAmount == homePitRight.StonesAmount;
         }
 
         public bool IsOnlyWinner(Player cPlayer)
         {
-            if (cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount)
-            {
-                return true;
-            }
-
-            return false;
+            return cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount;
         }
 
         public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit startPit, Pit lastPit)
@@ -78,12 +60,7 @@ namespace Mankala
                 return cPlayer;
             }
 
-            if (cPlayer == p1)
-            {
-                return p2;
-            }
-
-            return p1;
+            return cPlayer == p1 ? p2 : p1;
         }
 
         public bool WinningStonesAmountReached(Board board)

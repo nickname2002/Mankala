@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mankala
+namespace Mancala
 {
     public class MancalaTurn : ITurn
     {
         public bool MovePossible(Board board, Player cPlayer)
         {
-            if (board.IsEmptyRow(cPlayer))
-            {
-                return false;
-            }
-
-            return true;
+            return !board.IsEmptyRow(cPlayer);
         }
 
         public Pit NextPit(Board board, Pit cPit)
@@ -60,7 +55,7 @@ namespace Mankala
             {
                 cPit = NextPit(board, cPit);
 
-                // When hovering over an opposing homepit, don't add a stone
+                // When hovering over an opposing home pit, don't add a stone
                 if (cPit.IndexInList == cPlayer.OpposingHomePit.IndexInList)
                 {
                     continue;
@@ -83,16 +78,18 @@ namespace Mankala
                 return;
             }
 
-            if (cPit.StonesAmount == 1 && PitOwnedByPlayer(board, cPlayer, cPit))
+            if (cPit.StonesAmount != 1 || !PitOwnedByPlayer(board, cPlayer, cPit))
             {
-                // Get all stones from opposing pit
-                Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.GetStones();
-
-                // Move all stones from opposing pit to homepit
-                opposingPit.RemoveStones();
-                cPlayer.HomePit.Fill(stonesToGain);                
+                return;
             }
+
+            // Get all stones from opposing pit
+            Pit opposingPit = board.OpposingPit(cPit);
+            int stonesToGain = opposingPit.GetStones();
+
+            // Move all stones from opposing pit to home pit
+            opposingPit.RemoveStones();
+            cPlayer.HomePit.Fill(stonesToGain);
         }
 
         public bool PitOwnedByPlayer(Board board, Player cPlayer, Pit cPit)

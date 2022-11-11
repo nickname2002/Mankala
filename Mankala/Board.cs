@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Mankala
+namespace Mancala
 {
     public class Board
     {
@@ -31,55 +31,13 @@ namespace Mankala
         private int width;
         private int height;
 
-        // Homepits
-        public HomePit HomePitLeft
-        {
-            get
-            {
-                return (HomePit)pits[0];
-            }
-        }
-
-        public HomePit HomePitRight
-        {
-            get
-            {
-                return (HomePit)pits[this.PitsTotal - 1];
-            }
-        }
-
-        // Board dimensions
-        public int PlaysPitPerRow 
-        { 
-            get
-            {
-                return playPitsPerRow;
-            }
-        }
-
-        public int PlayPitsTotal 
-        { 
-            get
-            {
-                return PlaysPitPerRow * 2;
-            }
-        }
-
-        public int PitsTotal 
-        {   
-            get
-            {
-                return PlaysPitPerRow * 2 + 2;
-            } 
-        }
-
-        public int TotalStonesAmount
-        {
-            get
-            {
-                return startingStonesAmount * this.PlayPitsTotal;
-            }
-        }
+        // Board properties
+        public HomePit HomePitLeft => (HomePit)pits[0];
+        public HomePit HomePitRight => (HomePit)pits[this.PitsTotal - 1];
+        public int PlaysPitPerRow => playPitsPerRow;
+        public int PlayPitsTotal => PlaysPitPerRow * 2;
+        public int PitsTotal => PlaysPitPerRow * 2 + 2;
+        public int TotalStonesAmount => startingStonesAmount * this.PlayPitsTotal;
 
         public Board(int size, int startingStonesAmount)
         {
@@ -128,15 +86,7 @@ namespace Mankala
         /* Checks whether a pit is clicked */
         public Pit? ClickPit(Point mouseLoc)
         {
-            foreach (Pit pit in this.pits)
-            {
-                if (pit.Clicked(mouseLoc))
-                {
-                    return pit;
-                }
-            }
-
-            return null;
+            return this.pits.FirstOrDefault(pit => pit.Clicked(mouseLoc));
         }
 
         /* Draw the full board */
@@ -172,24 +122,30 @@ namespace Mankala
         {
             List<Pit> playPits = new List<Pit>();
 
-            // Check for P1
-            if (owner.ToString() == "P1")
+            switch (owner.ToString())
             {
-                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
+                // Check for P1
+                case "P1":
                 {
-                    playPits.Add(pits[i]);
-                }
-            }
-
-            // Check for P2
-            if (owner.ToString() == "P2")
-            {
-                for (int i = 1; i <= this.playPitsPerRow; i++)
-                {
-                    if (this.pits[i].GetStones() != 0)
+                    for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
                     {
                         playPits.Add(pits[i]);
                     }
+
+                    break;
+                }
+                // Check for P2
+                case "P2":
+                {
+                    for (int i = 1; i <= this.playPitsPerRow; i++)
+                    {
+                        if (this.pits[i].GetStones() != 0)
+                        {
+                            playPits.Add(pits[i]);
+                        }
+                    }
+
+                    break;
                 }
             }
 
@@ -236,7 +192,7 @@ namespace Mankala
         /* Reset the playing board */
         public void ResetBoard()
         {
-            // Homepits cleared
+            // Home pits cleared
             this.pits[0].RemoveStones();
             this.pits[PitsTotal - 1].RemoveStones();
 
@@ -251,27 +207,33 @@ namespace Mankala
         /* Checks if a row of play pits is empty for a specific player */
         public bool IsEmptyRow(Player player)
         {
-            // Check for P2
-            if (player.ToString() == "P2")
+            switch (player.ToString())
             {
-                for (int i = 1; i <= this.playPitsPerRow; i++)
+                // Check for P2
+                case "P2":
                 {
-                    if (this.pits[i].GetStones() != 0)
+                    for (int i = 1; i <= this.playPitsPerRow; i++)
                     {
-                        return false;
+                        if (this.pits[i].GetStones() != 0)
+                        {
+                            return false;
+                        }
                     }
-                }
-            }
 
-            // Check for P1
-            if (player.ToString() == "P1")
-            {
-                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
+                    break;
+                }
+                // Check for P1
+                case "P1":
                 {
-                    if (this.pits[i].GetStones() != 0)
+                    for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
                     {
-                        return false;
+                        if (this.pits[i].GetStones() != 0)
+                        {
+                            return false;
+                        }
                     }
+
+                    break;
                 }
             }
 
@@ -295,7 +257,7 @@ namespace Mankala
             return this.pits[indexOpposingPit];
         }
 
-        /* Transfer all stones within a row of play pits to linked homepit */
+        /* Transfer all stones within a row of play pits to linked home pit */
         public void TransferToHomePit(Player receiver)
         {
             // Check for P2
@@ -319,44 +281,25 @@ namespace Mankala
             }
         }
 
-        /* Return the pit at a certain index in the board */ 
+        /* Return the pit at a certain index in the board */
         public Pit GetPit(int index)
         {
             return this.pits[index];
         }
 
-        /* String representation of the board */
-        public override string ToString()
-        {
-            string res = "";
-
-            for (int i = 0; i <= this.playPitsPerRow; i++)
-            {
-                res += "  -  ";
-                res += this.pits[i].StonesAmount;
-            }
-            res += "\n";
-            for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList; i++)
-            {
-                res += "  -  ";
-                res += this.pits[i].StonesAmount;
-            }
-
-            return (res + "\n\n");
-        }
 
         /* Clone this instance of Board */
         public Board Clone()
         {
-            Board cBoard = new Board(this.PlaysPitPerRow, this.startingStonesAmount);
+            Board cBoard = new Board(this.PlaysPitPerRow, this.startingStonesAmount)
+            {
+                // Init board size
+                playPitsPerRow = this.playPitsPerRow,
+                // Arrange array of pits
+                startingStonesAmount = startingStonesAmount,
+                pits = new Pit[(PlaysPitPerRow * 2) + 2]
+            };
 
-            // Init board size
-            cBoard.playPitsPerRow = this.playPitsPerRow;
-
-            // Arrange array of pits
-            cBoard.startingStonesAmount = startingStonesAmount;
-            cBoard.pits = new Pit[(PlaysPitPerRow * 2) + 2];
-            
             // Clone all pits in board
             for (int i = 0; i < this.PitsTotal; i++)
             {
@@ -377,7 +320,7 @@ namespace Mankala
             cBoard.coords.X = (800 - cBoard.width) / 2;
             cBoard.coords.Y = (600 - cBoard.height) / 2;
 
-            // Set homepit owners
+            // Set home pit owners
             cBoard.HomePitLeft.Owner = this.HomePitLeft.Owner;
             cBoard.HomePitRight.Owner = this.HomePitRight.Owner;
 

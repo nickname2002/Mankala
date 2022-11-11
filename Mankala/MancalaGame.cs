@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Mankala
+namespace Mancala
 {
     public enum GameType { Mancala, Wari }
     public enum PlayerID { P1, P2 }
@@ -16,16 +16,16 @@ namespace Mankala
         IMancalaFactory mancalaFactory;
 
         // Player data 
-        Player p1;
-        Player p2;
-        Player activePlayer;
+        private Player p1;
+        private Player p2;
+        private Player activePlayer;
 
         // Board
         public Board board;
 
         // Mancala game strategies
-        IScore scoreStrategy;
-        ITurn turnStrategy; 
+        private readonly IScore scoreStrategy;
+        private readonly ITurn turnStrategy; 
 
         public MancalaGame(IMancalaFactory game)
         {
@@ -108,17 +108,7 @@ namespace Mankala
 
         public bool GameOver()
         {
-            if (scoreStrategy.GameOver(turnStrategy, board))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool ResetGame()
-        {
-            throw new NotImplementedException();
+            return scoreStrategy.GameOver(turnStrategy, board);
         }
     }
 }

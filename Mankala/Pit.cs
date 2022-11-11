@@ -5,64 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Mankala
+namespace Mancala
 {
     public abstract class Pit
     {
         protected List<Stone> stones;
-        public int StonesAmount
-        {
-            get
-            {
-                return stones.Count;
-            }
-        }
-
         protected int index;
-        public int IndexInList
-        {
-            get
-            {
-                return index;
-            }
-        }
-
         protected Point screenLoc;
         protected int width;
         protected int height;
 
+        // Pit properties
+        public int StonesAmount => stones.Count;
+        public int IndexInList => index;
+        public int Width => width;
+
+        public int Height => height;
+
         public Point ScreenLoc
         {
-            get
-            {
-                return screenLoc;
-            }
+            get => screenLoc;
 
-            set
-            {
-                this.screenLoc = value;
-            }
-        }
-
-        public int Width 
-        {
-            get 
-            {
-                return width;
-            } 
-        }
-
-        public int Height
-        {
-            get
-            {
-                return height;
-            }
-        }
-
-        public Pit()
-        {
-
+            set => this.screenLoc = value;
         }
 
         public void Draw(Graphics gr)
