@@ -14,8 +14,8 @@ namespace Mancala
             Player p2 = board.HomePitRight.Owner;
 
             // Check empty rows for each player
-            CheckForEmptyRow(board, p1);
-            CheckForEmptyRow(board, p2);
+            CheckForEmptyRow(turnStrategy, board, p1);
+            CheckForEmptyRow(turnStrategy, board, p2);
 
             if (!WinningStonesAmountReached(board))
             {
@@ -25,11 +25,11 @@ namespace Mancala
             return IsDraw(board, p2.HomePit, p1.HomePit) || IsOnlyWinner(p1) || IsOnlyWinner(p2);
         }
 
-        public void CheckForEmptyRow(Board board, Player cPlayer)
+        public void CheckForEmptyRow(ITurn turnStrategy, Board board, Player cPlayer)
         {
             if (board.IsEmptyRow(cPlayer))
             {
-                board.TransferToHomePit(cPlayer.Opponent);
+                board.TransferToHomePit(turnStrategy, cPlayer.Opponent);
             }
         }
 

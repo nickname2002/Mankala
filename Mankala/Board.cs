@@ -258,25 +258,14 @@ namespace Mancala
         }
 
         /* Transfer all stones within a row of play pits to linked home pit */
-        public void TransferToHomePit(Player receiver)
+        public void TransferToHomePit(ITurn turnStrategy, Player receiver)
         {
-            // Check for P2
-            if (receiver.ToString() == "P2")
+            foreach (Pit sPit in this.pits)
             {
-                for (int i = 1; i <= this.playPitsPerRow; i++)
+                if (turnStrategy.PitOwnedByPlayer(this, receiver, sPit))
                 {
-                    receiver.HomePit.Fill(this.pits[i].StonesAmount);
-                    this.pits[i].RemoveStones();
-                }
-            }
-
-            // Check for P1
-            if (receiver.ToString() == "P1")
-            {
-                for (int i = this.playPitsPerRow + 1; i <= this.HomePitRight.IndexInList - 1; i++)
-                {
-                    receiver.HomePit.Fill(this.pits[i].StonesAmount);
-                    this.pits[i].RemoveStones();
+                    receiver.HomePit.Fill(sPit.StonesAmount);
+                    sPit.RemoveStones();
                 }
             }
         }

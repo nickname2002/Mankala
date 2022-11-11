@@ -98,14 +98,16 @@ namespace Mancala
 
             if (cPlayer.HomePit.IndexInList == 0)
             {
-                if (indexSelectedPit <= cPlayer.OpposingHomePit.IndexInList / 2)
+                if (indexSelectedPit <= cPlayer.OpposingHomePit.IndexInList / 2 
+                    && indexSelectedPit != board.HomePitLeft.IndexInList)
                 {
                     return true;
                 }
             }
             else
             {
-                if (indexSelectedPit > cPlayer.HomePit.IndexInList / 2)
+                if (indexSelectedPit > cPlayer.HomePit.IndexInList / 2 
+                    && indexSelectedPit != board.HomePitRight.IndexInList)
                 {
                     return true;
                 }
