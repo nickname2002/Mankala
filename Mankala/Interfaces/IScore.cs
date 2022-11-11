@@ -16,6 +16,5 @@ namespace Mancala
         public Player SwitchPlayer(Player cPlayer, Player p1, Player p2, Pit startPit, Pit lastPit);
         public void CheckForEmptyRow(ITurn turnsStrategy, Board board, Player cPlayer);
         public bool WinningStonesAmountReached(Board board);
-
     }
 }

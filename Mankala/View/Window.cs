@@ -176,6 +176,7 @@ namespace Mancala
         {
             if (this.state == GameState.Playing)
             {
+                Console.WriteLine(game.board.ClickPit(new Point(347, 315)));
                 game.PerformTurn(mea.Location);
                 this.Invalidate();
             }

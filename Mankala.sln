@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mancala", "Mankala\Mancala.csproj", "{858F2CBD-CA8B-4E81-B699-73D19A148395}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MancalaTest", "MancalaTest\MancalaTest.csproj", "{79702C1F-3803-45E7-B1D2-D333A7BF43CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{858F2CBD-CA8B-4E81-B699-73D19A148395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{858F2CBD-CA8B-4E81-B699-73D19A148395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{858F2CBD-CA8B-4E81-B699-73D19A148395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79702C1F-3803-45E7-B1D2-D333A7BF43CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79702C1F-3803-45E7-B1D2-D333A7BF43CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79702C1F-3803-45E7-B1D2-D333A7BF43CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79702C1F-3803-45E7-B1D2-D333A7BF43CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

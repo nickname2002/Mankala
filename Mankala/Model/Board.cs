@@ -86,6 +86,7 @@ namespace Mancala
         /* Checks whether a pit is clicked */
         public Pit? ClickPit(Point mouseLoc)
         {
+            Console.WriteLine(mouseLoc.ToString() + "  -   " + this.pits.FirstOrDefault(pit => pit.Clicked(mouseLoc)));
             return this.pits.FirstOrDefault(pit => pit.Clicked(mouseLoc));
         }
 

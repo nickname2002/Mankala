@@ -85,6 +85,8 @@ namespace Mancala
                 return;
             }
 
+            Console.WriteLine(board.ClickPit(new Point(347, 315)));
+
             Pit? clickedPit = board.ClickPit(mouseLoc);
 
             // Checks whether a valid pit is clicked
