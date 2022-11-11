@@ -10,7 +10,7 @@ namespace Mankala
     {
         public CanaryFactory()
         {
-
+        
         }
 
         public Board CreateBoard()

@@ -13,7 +13,7 @@ namespace Mankala
             if (board.IsEmptyRow(cPlayer))
             {
                 board.TransferToHomePit(cPlayer.Opponent);
-            }
+        }
         }
 
         public bool GameOver(ITurn turnStrategy, Board board)
@@ -64,7 +64,7 @@ namespace Mankala
         public bool IsOnlyWinner(Player cPlayer)
         {
             if (cPlayer.HomePit.StonesAmount > cPlayer.OpposingHomePit.StonesAmount)
-            {
+        {
                 return true;
             }
 

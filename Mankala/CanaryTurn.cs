@@ -39,7 +39,7 @@ namespace Mankala
             if (board.IsEmptyRow(cPlayer))
             {
                 return false;
-            }
+        }
 
             return true;
         }
