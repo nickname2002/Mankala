@@ -12,5 +12,6 @@ namespace Mankala
         public IScore CreateScore();
         public Board CreateBoard();   
         public ITurn CreateTurn();
+        public Player CreatePlayer(Board board, PlayerID id);
     }
 }

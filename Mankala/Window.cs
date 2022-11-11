@@ -75,6 +75,7 @@ namespace Mankala
             // Button event handlers
             mancalaButton.Click += MancalaSelect;
             wariButton.Click += WariSelect;
+            canaryButton.Click += CanarySelect;
 
             // Add labels to controls
             this.Controls.Add(mancalaButton);
@@ -141,14 +142,14 @@ namespace Mankala
             this.Invalidate();
         }
 
-        /* Click event handler for the game option buttons */
+        /* Click event handlers for the game option buttons */
+
         private void MancalaSelect(object sender, EventArgs ea)
         {
             this.game = new MancalaGame(new MancalaFactory());
             this.state = GameState.Playing;
 
             this.TogglePlayButtons();
-
             this.Invalidate();
         }
 
@@ -158,8 +159,16 @@ namespace Mankala
             this.state = GameState.Playing;
 
             this.TogglePlayButtons(); 
-
             this.Invalidate(); 
+        }
+
+        private void CanarySelect(object sender, EventArgs ea)
+        {
+            this.game = new MancalaGame(new CanaryFactory());
+            this.state = GameState.Playing;
+
+            this.TogglePlayButtons();
+            this.Invalidate();
         }
 
         /* Screen click event handler */

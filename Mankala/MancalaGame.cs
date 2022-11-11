@@ -7,7 +7,8 @@ using System.Windows.Forms;
 
 namespace Mankala
 {
-    enum GameType { Mancala, Wari }
+    public enum GameType { Mancala, Wari }
+    public enum PlayerID { P1, P2 }
 
     public class MancalaGame
     {
@@ -38,13 +39,9 @@ namespace Mankala
             this.turnStrategy = mancalaFactory.CreateTurn();
 
             // Initialize players
-            this.p1 = new Player("P1", board.HomePitRight, board.HomePitLeft);
-            this.p2 = new Player("P2", board.HomePitLeft, board.HomePitRight);
+            this.p1 = mancalaFactory.CreatePlayer(board, PlayerID.P1);
+            this.p2 = mancalaFactory.CreatePlayer(board, PlayerID.P2);
             this.activePlayer = p1;
-
-            // Assign the owners to the home pits
-            this.board.HomePitLeft.Owner = this.p2;
-            this.board.HomePitRight.Owner = this.p1;
         }
 
         public void DrawScore(Graphics gr)
@@ -92,9 +89,9 @@ namespace Mankala
             Pit? clickedPit = board.ClickPit(mouseLoc);
 
             // Checks whether a valid pit is clicked
-            if (clickedPit == null 
+            if (clickedPit == null
                 || clickedPit.IsEmpty() 
-                || !activePlayer.IsOwnedPit(clickedPit))
+                || !turnStrategy.PitOwnedByPlayer(activePlayer, clickedPit))
             {
                 return;
             }

@@ -6,8 +6,33 @@ using System.Threading.Tasks;
 
 namespace Mankala
 {
-    public class MancalaTurn : ITurn
+    public class CanaryTurn : ITurn
     {
+        public CanaryTurn()
+        {
+
+        }
+
+        public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
+        {
+            if (cPit.ToString() == "HomePit")
+            {
+                return;
+            }
+
+            // Fetch all stones if stones amount of last pit is equal t0 
+            if (cPit.StonesAmount == 1 && (cPit.StonesAmount + 1) == board.OpposingPit(cPit).StonesAmount)
+            {
+                // Get all stones from opposing pit
+                Pit opposingPit = board.OpposingPit(cPit);
+                int stonesToGain = opposingPit.GetStones();
+
+                // Move all stones from opposing pit to homepit
+                opposingPit.RemoveStones();
+                cPlayer.HomePit.Fill(stonesToGain);
+            }
+        }
+
         public bool MovePossible(Board board, Player cPlayer)
         {
             if (board.IsEmptyRow(cPlayer))
@@ -20,26 +45,26 @@ namespace Mankala
 
         public Pit NextPit(Board board, Pit cPit)
         {
-            // Left home pit
-            if (cPit.IndexInList == board.HomePitLeft.IndexInList)
+            // Left homepit
+            if (cPit.IndexInList == board.PlaysPitPerRow + 1)
             {
-                return board.GetPit(board.PlaysPitPerRow + 1);
+                return board.HomePitLeft;
             }
 
-            // Right home pit
-            if (cPit.IndexInList == board.HomePitRight.IndexInList)
+            // Right homepit
+            if (cPit.IndexInList == board.PlaysPitPerRow)
             {
-                return board.GetPit(board.PlaysPitPerRow);
+                return board.HomePitRight;
             }
 
             // Top play pits
-            if (cPit.IndexInList <= board.PlaysPitPerRow)
+            if (cPit.IndexInList < board.PlaysPitPerRow)
             {
-                return board.GetPit(cPit.IndexInList - 1);
+                return board.GetPit(cPit.IndexInList + 1);
             }
 
             // Bottom play pits
-            return board.GetPit(cPit.IndexInList + 1);
+            return board.GetPit(cPit.IndexInList - 1);
         }
 
         public Pit PerformTurn(Board board, Player cPlayer, Pit startingPit)
@@ -55,7 +80,7 @@ namespace Mankala
             int stonesAmount = startingPit.GetStones();
             startingPit.RemoveStones();
 
-            // Move to pits in counterclockwise direction, add one stone
+            // Move to pits in clockwise direction, adding one stone
             while (stonesAmount != 0)
             {
                 cPit = NextPit(board, cPit);
@@ -70,45 +95,28 @@ namespace Mankala
                 stonesAmount--;
             }
 
-            // Action performed when on last pit of move
+            // Action performed whne on last pit of move
             CaptureSeeds(board, cPlayer, cPit);
 
             return cPit;
         }
 
-        public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
-        {
-            if (cPit.ToString() == "HomePit")
-            {
-                return;
-            }
-
-            if (cPit.StonesAmount == 1 && PitOwnedByPlayer(cPlayer, cPit))
-            {
-                // Get all stones from opposing pit
-                Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.GetStones();
-
-                // Move all stones from opposing pit to homepit
-                opposingPit.RemoveStones();
-                cPlayer.HomePit.Fill(stonesToGain);                
-            }
-        }
-
+        // TODO: This function does not give a proper result, 
+        // therefore input for P2 does not work
         public bool PitOwnedByPlayer(Player cPlayer, Pit cPit)
         {
             int indexSelectedPit = cPit.IndexInList;
 
             if (cPlayer.HomePit.IndexInList == 0)
             {
-                if (indexSelectedPit <= cPlayer.OpposingHomePit.IndexInList / 2)
+                if (indexSelectedPit > cPlayer.HomePit.IndexInList / 2)
                 {
                     return true;
                 }
             }
             else
             {
-                if (indexSelectedPit > cPlayer.HomePit.IndexInList / 2)
+                if (indexSelectedPit <= cPlayer.OpposingHomePit.IndexInList / 2)
                 {
                     return true;
                 }
