@@ -8,13 +8,10 @@ namespace Mankala
 {
     public class CanaryFactory : IMancalaFactory
     {
-        public CanaryFactory()
-        {
-
-        }
+        
         public Board CreateBoard()
         {
-            throw new NotImplementedException();
+            return new Board(8, 5); 
         }
 
         public IScore CreateScore()
