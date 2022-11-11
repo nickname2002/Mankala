@@ -26,7 +26,7 @@ namespace Mankala
             return board.GetPit(cPit.IndexInList + 1);
         }
 
-        public bool PitOwnedByPlayer(Player cPlayer, Pit cPit)
+        public bool PitOwnedByPlayer(Board board, Player cPlayer, Pit cPit)
         {
             int indexSelectedPit = cPit.IndexInList;
 
@@ -88,7 +88,7 @@ namespace Mankala
 
         public void CaptureSeeds(Board board, Player cPlayer, Pit cPit)
         {            
-            if ((cPit.StonesAmount == 2 || cPit.StonesAmount == 3) && !PitOwnedByPlayer(cPlayer, cPit))
+            if ((cPit.StonesAmount == 2 || cPit.StonesAmount == 3) && !PitOwnedByPlayer(board, cPlayer, cPit))
             {
                 int stonesToGain = cPit.GetStones();
                 Pit prevPit = PreviousPit(board, cPit);

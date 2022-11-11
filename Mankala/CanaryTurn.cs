@@ -20,15 +20,16 @@ namespace Mankala
                 return;
             }
 
-            // Fetch all stones if stones amount of last pit is equal t0 
-            if (cPit.StonesAmount == 1 && (cPit.StonesAmount + 1) == board.OpposingPit(cPit).StonesAmount)
+            // Fetch all stones from current and opposing play pit when their stones amount are equal
+            if (cPit.StonesAmount == board.OpposingPit(cPit).StonesAmount)
             {
-                // Get all stones from opposing pit
+                // Get all stones from opposing and current pit
                 Pit opposingPit = board.OpposingPit(cPit);
-                int stonesToGain = opposingPit.GetStones();
+                int stonesToGain = opposingPit.GetStones() + cPit.GetStones();
 
-                // Move all stones from opposing pit to homepit
+                // Move all stones from play pits to homepit
                 opposingPit.RemoveStones();
+                cPit.RemoveStones();
                 cPlayer.HomePit.Fill(stonesToGain);
             }
         }
@@ -101,22 +102,23 @@ namespace Mankala
             return cPit;
         }
 
-        // TODO: This function does not give a proper result, 
-        // therefore input for P2 does not work
-        public bool PitOwnedByPlayer(Player cPlayer, Pit cPit)
+        public bool PitOwnedByPlayer(Board board, Player cPlayer, Pit cPit)
         {
             int indexSelectedPit = cPit.IndexInList;
 
+            // Check for left home pit owner
             if (cPlayer.HomePit.IndexInList == 0)
             {
-                if (indexSelectedPit > cPlayer.HomePit.IndexInList / 2)
+                if (indexSelectedPit >= board.PlaysPitPerRow + 1 
+                    && indexSelectedPit != board.HomePitRight.IndexInList)
                 {
                     return true;
                 }
             }
+            // Check for right homepit owner
             else
             {
-                if (indexSelectedPit <= cPlayer.OpposingHomePit.IndexInList / 2)
+                if (indexSelectedPit <= board.PlaysPitPerRow && indexSelectedPit != board.HomePitLeft.IndexInList)
                 {
                     return true;
                 }

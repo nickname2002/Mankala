@@ -83,7 +83,7 @@ namespace Mankala
                 return;
             }
 
-            if (cPit.StonesAmount == 1 && PitOwnedByPlayer(cPlayer, cPit))
+            if (cPit.StonesAmount == 1 && PitOwnedByPlayer(board, cPlayer, cPit))
             {
                 // Get all stones from opposing pit
                 Pit opposingPit = board.OpposingPit(cPit);
@@ -95,7 +95,7 @@ namespace Mankala
             }
         }
 
-        public bool PitOwnedByPlayer(Player cPlayer, Pit cPit)
+        public bool PitOwnedByPlayer(Board board, Player cPlayer, Pit cPit)
         {
             int indexSelectedPit = cPit.IndexInList;
 

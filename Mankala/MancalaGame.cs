@@ -91,7 +91,7 @@ namespace Mankala
             // Checks whether a valid pit is clicked
             if (clickedPit == null
                 || clickedPit.IsEmpty() 
-                || !turnStrategy.PitOwnedByPlayer(activePlayer, clickedPit))
+                || !turnStrategy.PitOwnedByPlayer(board, activePlayer, clickedPit))
             {
                 return;
             }

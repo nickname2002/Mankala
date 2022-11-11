@@ -15,12 +15,12 @@ namespace Mankala
 
         public Board CreateBoard()
         {
-            return new Board(5, 5);
+            return new Board(6, 5);
         }
 
         public IScore CreateScore()
         {
-            return new MancalaScore();
+            return new CanaryScore();
         }
 
         public ITurn CreateTurn()
